@@ -19,7 +19,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
     private String pass;
     private Connection connection;
     
-	@Override
 	public void close() throws SQLException {
         try {
             if ( getConnection() != null && ! getConnection().isClosed() ) {
@@ -32,7 +31,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
         }
 	}
 
-	@Override
 	public void commit() throws SQLException {
 	       try {
 	            if ( getConnection() != null && ! getConnection().getAutoCommit() ) {
@@ -45,14 +43,12 @@ public class DatabaseDAOImpl implements DatabaseDAO{
 	        }
 	}
 
-	@Override
 	public boolean connect(boolean commit) throws Exception {
         Class.forName(getDriver());
         setConnection(DriverManager.getConnection(url, user, pass));
         return true;
 	}
 
-	@Override
 	public void initialize(String driver, String url, String user, String pass)
 			throws Exception {
 	        log.info("Initialing DatabaseDAOImpl: "+this);
@@ -62,7 +58,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
 	        this.setUser(user);
 	}
 
-	@Override
 	public void rollback() throws SQLException {
         try {
             if ( getConnection() != null && ! getConnection().getAutoCommit() ) {
@@ -76,7 +71,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
 		
 	}
 
-	@Override
 	public PreparedStatement prepareStatement(String statement) {
         try {
 			return getConnection().prepareStatement( statement );
