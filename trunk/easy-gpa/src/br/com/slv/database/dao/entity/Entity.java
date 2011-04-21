@@ -28,7 +28,9 @@ public abstract class Entity {
 						tableName, fieldTos, TransferObject.INSERT_TYPE);
 			Connection conn = ConnectionFactory.getConnection();
 			DataTransferObject dto = new DataTransferObject(conn);
-			return dto.transact(to);	
+			ArrayList<TransferObject> items = new ArrayList<TransferObject>();
+			items.add(to);
+			return dto.transact(items);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
