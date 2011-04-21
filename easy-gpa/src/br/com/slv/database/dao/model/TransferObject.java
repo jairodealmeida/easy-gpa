@@ -94,7 +94,19 @@ public class TransferObject implements Serializable{
     public int getTransactionType(){
         return transactionType;
     }
-        
+    public String toString(){
+    	StringBuilder result = new StringBuilder();
+    	if(fields!=null){
+    		result.append("values = ");
+    		for (int i = 0; i < fields.size(); i++) {
+				FieldTO field = fields.get(i);
+				result.append( field.getValue() );
+				result.append( ":" );
+			}
+    		return result.toString();
+    	}
+    	return "";
+    }
         
 }//end of TranferObject
  
