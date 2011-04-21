@@ -5,7 +5,12 @@
 == Data: 10/04/2011 ==
 
 == Descrição: ==
-Componente easy-gpa desenvolvido com o objetivo de separar as consultas ao banco de dados em uma camada específica, todas as operações de update serão executadas em um objeto transact e outras operações de consulta poderão ser exibidas em um método select dentro do objeto principal que é o DataTransfetDelegate, nesse objeto java poderão ser executadas pesquisas e transações java ao banco de dados de uma forma genérica sem a necessidade de entidades.
+Componente easy-gpa desenvolvido com o objetivo de separar as consultas
+ao banco de dados em uma camada específica, todas as operações de update
+serão executadas em um objeto transact e outras operações de consulta 
+poderão ser exibidas em um método select dentro do objeto principal 
+que é o DataTransfetDelegate, nesse objeto java poderão ser executadas pesquisas e transações java ao banco de dados de uma forma genérica 
+sem a necessidade de entidades.
 
 == Projeto: ==
 easy-gpa Componente
