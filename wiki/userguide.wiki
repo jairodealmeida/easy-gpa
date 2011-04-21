@@ -1,0 +1,32 @@
+#labels Featured
+= Autor: Jairo de Almeida =
+= E-mail: jairodealmeida@gmail.com =
+= Versão: 1.0 =
+= Data: 10/04/2011 =
+
+= Descrição: =
+Componente easy-gpa desenvolvido com o objetivo de separar as consultas ao banco de dados em uma camada específica, todas as operações de update serão executadas em um objeto transact e outras operações de consulta poderão ser exibidas em um método select dentro do objeto principal que é o DataTransfetDelegate, nesse objeto java poderão ser executadas pesquisas e transações java ao banco de dados de uma forma genérica sem a necessidade de entidades.
+
+= Projeto: =
+easy-gpa Componente
+	src  Código do componente
+	lib  Bibliotecas usadas pelo componente
+	doc  JavaDoc referente ao componente e suas classes
+
+= Configuração: =
+No arquivo database-config.properties
+configurar a instancia do banco de dados que será itilizada pelas pesquisas do componente
+= Exemplo: =
+oracle connection
+database.oracle.url jdbc:oracle:thin:@localhost:1521:orcl
+database.oracle.driver oracle.jdbc.driver.OracleDriver
+database.oracle.user slv
+database.oracle.pass slv
+	
+= Utilização: =
+As pesquisas e transações genéricas podem ser feitas a partir de uma classe chamada DataTRansferDelegate, nessa classe haverão dois métodos, 
+transact(ArrayList<TransferObject>) Onde TransferObject é o registro específico que será repositado no banco de dados pelos métodos de Insert, Update ou Delete especificados pelo seru tipo.
+public static final int INSERT_TYPE = 1;
+public static final int UPDATE_TYPE = 2;
+public static final int DELETE_TYPE = 3;
+Esses tipos podem ser inseridos no banco de dados de forma coletiva, mas se houver alguma falha o método de roolback será executado automaticamente pelo componente, inviabilizando a transação.
