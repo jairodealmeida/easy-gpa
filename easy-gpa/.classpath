@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="lib"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="images"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_18"/>
 	<classpathentry kind="lib" path="G:/gasmanager/slv-crud/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="G:/gasmanager/slv-crud/lib/postgresql-8.4-701.jdbc3.jar"/>
