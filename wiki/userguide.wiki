@@ -34,11 +34,12 @@ database.oracle.pass slv
 	
 == Utilização: ==
 As pesquisas e transações genéricas podem ser feitas a partir 
-de uma classe chamada DataTRansferDelegate, nessa classe 
-haverão dois métodos, transact(ArrayList of TransferObject) 
-Onde TransferObject é o registro específico que será 
-repositado no banco de dados pelos métodos de Insert, 
-Update ou Delete especificados pelo seru tipo.
+de uma classe chamada 
+*DataTRansferDelegate*, nessa classe haverão dois métodos, transct(*ArrayList of TransferObject*).
+*TransferObject* é o registro específico que será 
+repositado no banco de dados pelos métodos de 
+Insert, Update ou Delete 
+Especificados pelo seu tipo.
 public static final int INSERT_TYPE = 1;
 public static final int UPDATE_TYPE = 2;
 public static final int DELETE_TYPE = 3;
