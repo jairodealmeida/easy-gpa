@@ -10,11 +10,24 @@ import br.com.slv.database.dao.model.TransferObject;
 
 public class EntityTest {
 	
-	private Entity e = new Usuario("test","test","test", 1);
-	
 	@Test
-	public void ToTransferObject(){
+	public void insert(){
+		Entity e = new Usuario("test","test","test", 1);
 		String result = e.insert();
+		assertNotNull(result);
+		assertEquals("success", result);
+	}
+	@Test
+	public void update(){
+		Entity e = new Usuario("test","test","test", 1);
+		String result = e.update();
+		assertNotNull(result);
+		assertEquals("success", result);
+	}
+	@Test
+	public void delete(){
+		Entity e = new Usuario("test","test","test", 1);
+		String result = e.delete();
 		assertNotNull(result);
 		assertEquals("success", result);
 	}
