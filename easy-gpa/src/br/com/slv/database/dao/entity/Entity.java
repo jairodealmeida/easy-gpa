@@ -3,6 +3,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.slv.database.ConnectionFactory;
@@ -12,6 +13,9 @@ import br.com.slv.database.dao.model.TransferObject;
 
 public abstract class Entity {
 	
+	private static final String ID_NAME = "id";
+	
+	private ArrayList<FieldTO> primaryKeyTos;
 	private ArrayList<FieldTO> fieldTos;
 	/**
 	 * method used to get a table name of entity
@@ -24,21 +28,26 @@ public abstract class Entity {
 		String tableName = "tb_" + className.toLowerCase();
 		return tableName;
 	}
+	private String transact(TransferObject to) throws SQLException, ClassNotFoundException{
+		Connection conn = ConnectionFactory.getConnection();
+		DataTransferObject dto = new DataTransferObject(conn);
+		ArrayList<TransferObject> items = new ArrayList<TransferObject>();
+		items.add(to);
+		return dto.transact(items);	
+	}
 	/**
 	 * method will use to insert objects
 	 * @return "success or fail"
 	 */	
 	public String insert(){
 		try {
-			prepareFields();
+			prepareFields(false);
 			String tableName = getTableName();
 			TransferObject to = new TransferObject(
-						tableName, fieldTos, TransferObject.INSERT_TYPE);
-			Connection conn = ConnectionFactory.getConnection();
-			DataTransferObject dto = new DataTransferObject(conn);
-			ArrayList<TransferObject> items = new ArrayList<TransferObject>();
-			items.add(to);
-			return dto.transact(items);	
+						tableName, 
+						fieldTos, 
+						TransferObject.INSERT_TYPE);
+			return transact(to);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,15 +59,14 @@ public abstract class Entity {
 	 */
 	public String update(){
 		try {
-			prepareFields();
+			prepareFields(true);
 			String tableName = getTableName();
 			TransferObject to = new TransferObject(
-						tableName, fieldTos, TransferObject.UPDATE_TYPE);
-			Connection conn = ConnectionFactory.getConnection();
-			DataTransferObject dto = new DataTransferObject(conn);
-			ArrayList<TransferObject> items = new ArrayList<TransferObject>();
-			items.add(to);
-			return dto.transact(items);	
+						tableName,
+						primaryKeyTos,
+						fieldTos, 
+						TransferObject.UPDATE_TYPE);
+			return transact(to);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,15 +78,14 @@ public abstract class Entity {
 	 */
 	public String delete(){
 		try {
-			prepareFields();
+			prepareFields(true);
 			String tableName = getTableName();
 			TransferObject to = new TransferObject(
-						tableName, fieldTos, TransferObject.DELETE_TYPE);
-			Connection conn = ConnectionFactory.getConnection();
-			DataTransferObject dto = new DataTransferObject(conn);
-			ArrayList<TransferObject> items = new ArrayList<TransferObject>();
-			items.add(to);
-			return dto.transact(items);	
+						tableName,
+						primaryKeyTos,
+						fieldTos, 
+						TransferObject.DELETE_TYPE);
+			return transact(to);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,24 +102,29 @@ public abstract class Entity {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private void prepareFields() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException{
+	private void prepareFields(boolean usePrimaryKey) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException{
+		primaryKeyTos = new ArrayList<FieldTO>();
 		fieldTos = new ArrayList<FieldTO>();
 		Field[] fields = this.getClass().getDeclaredFields();	
 		//trunk entity to persistence
 		for(int i=0; i<fields.length; i++){
 			Field field = fields[i];
 			if(field!=null){
+				fields[i].setAccessible(true);
 				String name = fields[i].getName();
-				if(name.equalsIgnoreCase("id")){
-					//TODO ainda falta validar a chave primária do objeto
-					//por enquanto so esta prevendo pk usando sequence no banco
-					//objeto id sempre é gerado no banco por uma sequence
+				Object value = fields[i].get(this);
+				/* 
+				 ainda falta validar a chave primária do objeto
+				 por enquanto so esta prevendo pk usando sequence no banco
+				 objeto id sempre é gerado no banco por uma sequence
+				*/
+				if(name.equalsIgnoreCase(ID_NAME)){
+					primaryKeyTos.add(new FieldTO(name, value));
 				}else{
-					fields[i].setAccessible(true);
-					Object value = fields[i].get(this);
 					fieldTos.add(new FieldTO(name, value));
 				}
 			}
 		}
 	}
+
 }

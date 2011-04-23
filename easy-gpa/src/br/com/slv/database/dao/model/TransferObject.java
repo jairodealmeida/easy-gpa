@@ -9,34 +9,28 @@ public class TransferObject implements Serializable{
     public static final int INSERT_TYPE = 1;
     public static final int UPDATE_TYPE = 2;
     public static final int DELETE_TYPE = 3;
-
+    
+	private String tableName;
 	private ArrayList<FieldTO> primaryKeys;
     private ArrayList<FieldTO> fields;
-	private int srid; 
-	private String tableName;
 	private int transactionType;
-	private boolean merged;
         
-    public TransferObject(ArrayList<FieldTO> primaryKeys,
-                         int srid,
-                         String tableName,
+    public TransferObject(String tableName,
+    					 ArrayList<FieldTO> primaryKeys,
                          ArrayList<FieldTO> fields,
-                         int transactionType,
-                         boolean merged){
-           this.primaryKeys = primaryKeys;
-           this.srid = srid;
+                         int transactionType){
            this.tableName = tableName;
+           this.primaryKeys = primaryKeys;
            this.fields = fields;
-           this.transactionType = transactionType;
-           this.merged = merged;                         
+           this.transactionType = transactionType;               
     }
     
     public TransferObject(String tableName,
-            ArrayList<FieldTO> fields,
-            int transactionType){
-		this.tableName = tableName;
-		this.fields = fields;
-		this.transactionType = transactionType;
+            			  ArrayList<FieldTO> fields,
+            			  int transactionType){
+			this.tableName = tableName;
+			this.fields = fields;
+			this.transactionType = transactionType;
 	}
 
     public void setPrimaryKeys(ArrayList<FieldTO> primaryKeys) {
@@ -45,14 +39,6 @@ public class TransferObject implements Serializable{
 	 
 	public ArrayList<FieldTO> getPrimaryKeys() {
             return primaryKeys;
-	}
-	 
-	public void setSrid(int srid) {
-            this.srid = srid;
-	}
-	 
-	public int getSrid() {
-            return srid;
 	}
 	 
 	public void setTableName(String tableName) {
@@ -81,14 +67,6 @@ public class TransferObject implements Serializable{
 	 
 	public boolean isInserted() {
             return (transactionType==TransferObject.INSERT_TYPE);
-	}
-	 
-	public boolean isMerged() {
-            return merged;
-	}
-	 
-	public void setMerged(boolean merged) {
-            this.merged = merged;
 	}	
         
     public int getTransactionType(){

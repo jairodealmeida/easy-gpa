@@ -19,14 +19,14 @@ public class EntityTest {
 	}
 	@Test
 	public void update(){
-		Entity e = new Usuario("test","test","test", 1);
+		Entity e = new Usuario(6, "test", "test", "test", 1);
 		String result = e.update();
 		assertNotNull(result);
 		assertEquals("success", result);
 	}
 	@Test
 	public void delete(){
-		Entity e = new Usuario("test","test","test", 1);
+		Entity e = new Usuario(3, "test", "test", "test", 1);
 		String result = e.delete();
 		assertNotNull(result);
 		assertEquals("success", result);
