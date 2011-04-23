@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class InsertStatement implements Insertable {
 
     private TransferObject to;
-    private boolean coolPersistence = false;
     
     public InsertStatement(TransferObject to){
         this.to = to;
@@ -44,21 +43,13 @@ public class InsertStatement implements Insertable {
                     fieldNames.append(field.getName());
                     //TASK prepared statement fieldValues.append("'"+ field.getValue() + "'");
                     fieldValues.append("?");
-                    if(!coolPersistence && i<fields.size()-1){
+                    if(i<fields.size()-1){
                     	fieldNames.append(", ");
                     	fieldValues.append(", ");
                     }
                 }else{
                     throw new NullPointerException("fields is null");
                 }
-            }
-            if(coolPersistence){
-                if(to.isMerged()){
-                    fieldNames.append("REMEMBRADO, ");
-                    fieldValues.append("'S', ");
-                }
-                fieldNames.append("SINCINS");
-                fieldValues.append("'S'");	
             }
             fieldNames.append(" ) ");
             fieldValues.append(" ) ");

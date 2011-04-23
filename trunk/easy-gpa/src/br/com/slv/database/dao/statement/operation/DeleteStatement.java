@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class DeleteStatement implements Deletable {
     
 	private TransferObject to;
-    private boolean coolPersistence = false;
     
     public DeleteStatement(TransferObject feature){
         this.to = feature;
@@ -23,11 +22,7 @@ public class DeleteStatement implements Deletable {
                  if(cws!=null && !cws.toString().equalsIgnoreCase("")){
                     String tableName = to.getTableName();
                      if(tableName!=null && !tableName.equalsIgnoreCase("")){
-                    	 if(coolPersistence){
-                    		 result.append("UPDATE ");
-                    	 }else{
-                    		 result.append("DELETE ");
-                    	 }
+                    	 result.append("DELETE ");
                          result.append(tableName);
                          result.append(this.getParameters());
                          result.append(cws);
@@ -48,17 +43,6 @@ public class DeleteStatement implements Deletable {
     }
     public StringBuilder getParameters(){
         StringBuilder result = new StringBuilder();
-        if(coolPersistence){
-        	result.append(" SET ");
-        	if(to.isMerged()){
-        		result.append(" REMEMBRADO");
-        		result.append("=");
-        		result.append("'S', ");
-        	}
-        	result.append(" SINCDEL");
-        	result.append("=");
-        	result.append("'S'");
-        }
         return result;
     }
 

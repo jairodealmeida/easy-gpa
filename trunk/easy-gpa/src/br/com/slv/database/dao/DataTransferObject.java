@@ -23,19 +23,26 @@ public class DataTransferObject extends DatabaseDAOImpl {
     public DataTransferObject(Connection connection){
     	this.setConnection(connection);
     }
-        /**
-         * transaction method to represents a client EditFeature
-         * @param tos
-         * @return success or fail
-         */
+    /**
+     * transaction method to represents a client EditFeature
+     * @param tos
+     * @return success or fail
+     */
 	public String transact(ArrayList<TransferObject> tos) { 
                 try {
-                    return this.transactFeatures(tos);
+                    return this.transactEntitys(tos);
                 } catch (Exception e) {
+                	log.error(e);
                     return "fail";
                 }
 	} 
-    private String transactFeatures(ArrayList<TransferObject> tos) throws Exception {
+	/**
+	 * transact entity's in database instance 
+	 * @param tos - Transfer Objects in database
+	 * @return transact or fail
+	 * @throws Exception
+	 */
+    private String transactEntitys(ArrayList<TransferObject> tos) throws Exception {
         if(tos!=null){
         	int rows=0;
         	transaction.clear();
@@ -43,7 +50,9 @@ public class DataTransferObject extends DatabaseDAOImpl {
                 TransferObject to = tos.get(rows);
                 String executedSql = transact(to);
                 transaction.put(rows, executedSql);
-                log.info(rows + "  " + executedSql + "  " + to.toString() );
+                log.info( "transact rows : " + rows );
+                log.info( "transact sql  : " + executedSql );
+                log.info( "transact to   : " + to.toString() );
             }
             log.info("success to update " + rows + " rolls");
             return "success";

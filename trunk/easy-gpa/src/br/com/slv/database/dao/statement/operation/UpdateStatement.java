@@ -7,8 +7,9 @@ import br.com.slv.database.dao.statement.transacts.Updatable;
 import java.util.ArrayList;
 
 public class UpdateStatement implements Updatable {
+	
     private TransferObject to;
-    private boolean coolPersistence = false;
+    
     public UpdateStatement(TransferObject feature){
         this.to = feature;
     }
@@ -51,22 +52,12 @@ public class UpdateStatement implements Updatable {
                     result.append(field.getName());
                     result.append("=");
                     result.append("?");
-                    if(!coolPersistence && i==fields.size()-1){
+                    if( i==fields.size()-1 ){
                     	result.append(", ");
                     }
                 }else{
                     throw new NullPointerException("fields is null");
                 }
-            }
-            if(coolPersistence){
-	            if(to.isMerged()){
-	                result.append("REMEMBRADO");
-	                result.append("=");
-	                result.append("'S', ");
-	            }
-	            result.append("SINCUPD");
-	            result.append("=");
-	            result.append("'S'");
             }
             return result;
         }else{
