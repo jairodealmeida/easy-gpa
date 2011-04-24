@@ -26,7 +26,6 @@ public class UpdateStatement implements Updatable {
                          result.append(tableName);
                          result.append(this.getParameters());
                          result.append(cws);
-                         result.append("\n");
                          return result;
                      }else{
                          throw new NullPointerException("invalid table name = '" + tableName + "'");
@@ -52,7 +51,7 @@ public class UpdateStatement implements Updatable {
                     result.append(field.getName());
                     result.append("=");
                     result.append("?");
-                    if( i==fields.size()-1 ){
+                    if( i<fields.size()-1 ){
                     	result.append(", ");
                     }
                 }else{

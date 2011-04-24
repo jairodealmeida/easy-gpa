@@ -26,7 +26,6 @@ public class DeleteStatement implements Deletable {
                          result.append(tableName);
                          result.append(this.getParameters());
                          result.append(cws);
-                         result.append("\n");
                          return result;
                      }else{
                          throw new NullPointerException("invalid table name = '" + tableName + "'");
