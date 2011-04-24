@@ -42,11 +42,12 @@ public class ConnectionFactory {
       */
     private static void loadProperties(){
         try {
-            URL path_url = ConnectionFactory.class.getResource( "database-config.properties" );
+        	//"database-config.properties"
+            URL path_url = ConnectionFactory.class.getResource( "/" );
             if(path_url==null){
-                throw new NullPointerException("invalid properties file path");
+                throw new NullPointerException("invalid properties file path" + path_url);
             }
-            URI path_uri = new URI(path_url.toString());
+            URI path_uri = new URI(path_url.toString() + "database-config.properties");
             File file = new File(path_uri);
             if(file!=null && file.exists() && file.isFile()){
                  FileInputStream fis = new FileInputStream(file);
