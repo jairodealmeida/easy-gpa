@@ -1,7 +1,7 @@
-
 br.com.slv.database
 br.com.slv.database.dao
 br.com.slv.database.dao.delegate
+br.com.slv.database.dao.entity
 br.com.slv.database.dao.model
 br.com.slv.database.dao.statement
 br.com.slv.database.dao.statement.operation
