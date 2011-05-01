@@ -1,34 +1,53 @@
 package br.com.slv.database.dao.entity;
-@EntityTable(name="tb_usuario")
-public class Usuario extends Entity{
-	@FieldTable(name="id")
-	private int id;
-	@FieldTable(name="nome_completo")
-	private String nome_completo;
-	@FieldTable(name="nome_usuario")
-	private String nome_usuario;
-	@FieldTable(name="senha")
-	private String senha;
-	@FieldTable(name="id_device")
-	private int id_device;
 
-	public Usuario(String nome_completo, String nome_usuario,
-			String senha_character, int id_device) {
+import br.com.slv.database.dao.entity.annotation.GPAEntity;
+import br.com.slv.database.dao.entity.annotation.GPAField;
+import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
+
+@GPAEntity(name="tb_usuario")
+public class Usuario extends Entity{
+	@GPAPrimaryKey(name="id", ignore=true)
+	private int id;
+	@GPAField(name="nome_completo")
+	private String nomeCompleto;
+	@GPAField(name="nome_usuario")
+	private String nomeUsuario;
+	@GPAField(name="senha")
+	private String senha;
+	@GPAField(name="id_device")
+	private int idDevice;
+	/**
+	 * Used by insert without id, database are responsible 
+	 * to generate a sequential id to primary key 
+	 * @param nomeCompleto
+	 * @param nomeUsuario
+	 * @param senhaCharacter
+	 * @param idDevice
+	 */
+	public Usuario(String nomeCompleto, String nomeUsuario,
+			String senhaCharacter, int idDevice) {
 		super();
-		this.nome_completo = nome_completo;
-		this.nome_usuario = nome_usuario;
-		this.senha = senha_character;
-		this.id_device = id_device;
+		this.nomeCompleto = nomeCompleto;
+		this.nomeUsuario = nomeUsuario;
+		this.senha = senhaCharacter;
+		this.idDevice = idDevice;
 	}
-	
-	public Usuario(int id, String nome_completo, String nome_usuario,
-			String senha_character, int id_device) {
+	/**
+	 * in this case the entity are instantied with the primary key information
+	 * @param id
+	 * @param nomeCompleto
+	 * @param nomeUsuario
+	 * @param senhaCharacter
+	 * @param idDevice
+	 */
+	public Usuario(int id, String nomeCompleto, String nomeUsuario,
+			String senhaCharacter, int idDevice) {
 		super();
 		this.id = id;
-		this.nome_completo = nome_completo;
-		this.nome_usuario = nome_usuario;
-		this.senha = senha_character;
-		this.id_device = id_device;
+		this.nomeCompleto = nomeCompleto;
+		this.nomeUsuario = nomeUsuario;
+		this.senha = senhaCharacter;
+		this.idDevice = idDevice;
 	}
 	public int getId() {
 		return id;
@@ -36,17 +55,17 @@ public class Usuario extends Entity{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNome_completo() {
-		return nome_completo;
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
-	public void setNome_completo(String nome_completo) {
-		this.nome_completo = nome_completo;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
-	public String getNome_usuario() {
-		return nome_usuario;
+	public String getNomeUsuario() {
+		return nomeUsuario;
 	}
-	public void setNome_usuario(String nome_usuario) {
-		this.nome_usuario = nome_usuario;
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
 	}
 	public String getSenha() {
 		return senha;
@@ -54,11 +73,11 @@ public class Usuario extends Entity{
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public int getId_device() {
-		return id_device;
+	public int getIdDevice() {
+		return idDevice;
 	}
-	public void setId_device(int id_device) {
-		this.id_device = id_device;
+	public void setIdDevice(int idDevice) {
+		this.idDevice = idDevice;
 	}
 
 }
