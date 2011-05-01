@@ -1,4 +1,5 @@
 package br.com.slv.database.dao.entity;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,12 +9,13 @@ import java.util.ArrayList;
 
 import br.com.slv.database.ConnectionFactory;
 import br.com.slv.database.dao.DataTransferObject;
+import br.com.slv.database.dao.entity.annotation.GPAEntity;
+import br.com.slv.database.dao.entity.annotation.GPAField;
+import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
 
 public abstract class Entity {
-	
-	private static final String ID_NAME = "id";
 	
 	private ArrayList<FieldTO> primaryKeyTos;
 	private ArrayList<FieldTO> fieldTos;
@@ -24,8 +26,8 @@ public abstract class Entity {
 	 * @return String table name
 	 */
 	private String getTableName(){
-		String className = this.getClass().getSimpleName();
-		String tableName = "tb_" + className.toLowerCase();
+		GPAEntity annoTable = this.getClass().getAnnotation(GPAEntity.class);
+		String tableName = annoTable.name();
 		return tableName;
 	}
 	private String transact(TransferObject to) throws SQLException, ClassNotFoundException{
@@ -106,22 +108,31 @@ public abstract class Entity {
 		primaryKeyTos = new ArrayList<FieldTO>();
 		fieldTos = new ArrayList<FieldTO>();
 		Field[] fields = this.getClass().getDeclaredFields();	
+		
 		//trunk entity to persistence
 		for(int i=0; i<fields.length; i++){
-			Field field = fields[i];
-			if(field!=null){
-				fields[i].setAccessible(true);
-				String name = fields[i].getName();
-				Object value = fields[i].get(this);
+			Field reflectionField = fields[i];
+			if(reflectionField!=null){
+				reflectionField.setAccessible(true);
+				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
 				/* 
 				 ainda falta validar a chave primária do objeto
 				 por enquanto so esta prevendo pk usando sequence no banco
 				 objeto id sempre é gerado no banco por uma sequence
 				*/
-				if(name.equalsIgnoreCase(ID_NAME)){
+				if(annoField instanceof GPAPrimaryKey){
+					GPAPrimaryKey pk = (GPAPrimaryKey)annoField;
+					String name = pk.name();
+					Object value = reflectionField.get(this);
 					primaryKeyTos.add(new FieldTO(name, value));
-				}else{
+					continue;
+				}
+				if(annoField instanceof GPAPrimaryKey){
+					GPAField field = (GPAField)annoField;
+					String name = field.name();
+					Object value = reflectionField.get(this);
 					fieldTos.add(new FieldTO(name, value));
+					continue;
 				}
 			}
 		}
