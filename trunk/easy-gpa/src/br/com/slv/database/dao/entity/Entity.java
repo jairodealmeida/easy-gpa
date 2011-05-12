@@ -1,8 +1,8 @@
 package br.com.slv.database.dao.entity;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +14,8 @@ import br.com.slv.database.dao.entity.annotation.GPAField;
 import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
-
+@Deprecated // TODO Entity is a bad pratice to make OO persistence entities
+			// is necessary move this method to DataTranferDelegate os other business artifact
 public abstract class Entity {
 	
 	private ArrayList<FieldTO> primaryKeyTos;
