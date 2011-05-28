@@ -18,7 +18,8 @@ public class CommandMerge extends Command{
 	            return;
 	        File file = new File(path_name);
 	        StringBuilder text = new StringBuilder();
-	        
+	        //recursive read path files and merge with 
+	        //encoding to pt-br characters
 			fileUtil.recursiveMerge(file, text, "ISO-8859-1");
 			log.info(text);
 		} catch (Exception e) {
