@@ -30,6 +30,6 @@ public abstract class Command {
 		this.commandDescription = commandDescription;
 	}
 
-	public abstract void execute();
+	public abstract void execute() throws Exception;
 	
 }

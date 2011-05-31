@@ -24,24 +24,17 @@ import br.com.jro.developer.tools.commands.CommandHelp;
 	    new String[]{"-m","br.com.jro.developer.tools.commands.CommandMerge"}
 	   };
 	 
-	   public boolean execute(String[] args){
-            try {
-            	String[] cmd_array_item = null;
-                String token = args[0];
-                cmd_array_item = tokenValidate(token);
-                if(!token.equalsIgnoreCase("") && cmd_array_item==null ){
-                	log.info("Parameter <" + token + "> not found.");
-                	return false;
-                }else{
-                	//String[] command_values = new String[1];
-                	//listParameters(args, command_values);
-                	command(cmd_array_item,args);
-                	return true;
-                }
-            } catch (Exception e) {
-            	log.error("Error to execute the application.\n" + e.getMessage());
+	   public boolean execute(String[] args) throws Exception{
+           	String[] cmd_array_item = null;
+            String token = args[0];
+            cmd_array_item = tokenValidate(token);
+            if(!token.equalsIgnoreCase("") && cmd_array_item==null ){
+            	log.info("Parameter <" + token + "> not found.");
+            	return false;
+            }else{
+            	command(cmd_array_item,args);
+            	return true;
             }
-            return false;
         }
 	    private void listParameters(String[] args, String[] command_values){
 	    	if(args.length>0){
@@ -63,27 +56,15 @@ import br.com.jro.developer.tools.commands.CommandHelp;
             	String class_name = cmd_array_item[1];
 				Command command_exe = (Command)Class.forName(class_name).newInstance();
 				command_exe.execute();
-			} catch (InstantiationException e) {
+			} catch (Exception e) {
 				log.error(e.getMessage());
-			} catch (IllegalAccessException e) {
-				log.error(e.getMessage());
-			} catch (ClassNotFoundException e) {
-				log.error(e.getMessage());
-			}
+			} 
         }
-        private void command(String[] cmdArrayItem,String[] commandValues) {
-            try {
-            	String class_name = cmdArrayItem[1];
-				Command commandExe = (Command)Class.forName(class_name).newInstance();
-				commandExe.setCommandValues(commandValues);
-				commandExe.execute();
-			} catch (InstantiationException e) {
-				log.error(e.getMessage());
-			} catch (IllegalAccessException e) {
-				log.error(e.getMessage());
-			} catch (ClassNotFoundException e) {
-				log.error(e.getMessage());
-			}
+        private void command(String[] cmdArrayItem,String[] commandValues) throws Exception {
+        	String class_name = cmdArrayItem[1];
+			Command commandExe = (Command)Class.forName(class_name).newInstance();
+			commandExe.setCommandValues(commandValues);
+			commandExe.execute();
         }
         private String[] tokenValidate(String token){
             for (String[] token_item : CMD_ARRAY) {

@@ -11,7 +11,7 @@ public class CommandListFiles extends Command{
 		listFilesByPath();
 	}
    private boolean listFilesByPath(){
-	    String path_name = super.getCommandValues()[0];
+	    String path_name = super.getCommandValues()[1];
         if(path_name==null)
             return false;
         File file = new File(path_name);

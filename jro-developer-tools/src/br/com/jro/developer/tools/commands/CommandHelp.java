@@ -31,8 +31,8 @@ public class CommandHelp extends Command{
     			 "||...######..######......|\n" +
     			 "||.....\"\"\"\"  \"\"\"\"........|\n");
     	log.info("COMANDS ...");
-    	log.info("-d to print recursive files example : -d <path_name>");
+    	log.info("-d to print recursive path files : example -d <path_name>");
     	log.info("-h to read help");
-    	log.info("-m to read a recursive txt files into directory (will merge)");
+    	log.info("-m to read a recursive txt files into directory (will merge) : example -m <path_name> merge text files in log file");
     }
 }
