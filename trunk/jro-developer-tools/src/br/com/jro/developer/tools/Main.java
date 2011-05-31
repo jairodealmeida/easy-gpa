@@ -11,9 +11,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    	printArgs(args);
-        PromptCommand prompt = new PromptCommand();
-        prompt.execute(args);
+    	try {
+        	printArgs(args);
+            PromptCommand prompt = new PromptCommand();
+            prompt.execute(args);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
     }
     private static void printArgs(String[] args){
         if(args!=null){
