@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="/easy-gpa/easy-gpa-rc1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/projetos/workspace/easy-gpa-test/lib/log4j-1.2.14.jar"/>
-	<classpathentry kind="lib" path="C:/projetos/workspace/easy-gpa-test/lib/postgresql-8.4-701.jdbc3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/jairo.almeida/workspace/easy-gpa-test/lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/jairo.almeida/workspace/easy-gpa-test/lib/postgresql-8.4-701.jdbc3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

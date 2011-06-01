@@ -5,7 +5,7 @@ CREATE TABLE tb_device
   nome character varying NOT NULL,
   sistema_operacional character varying,
   CONSTRAINT tb_device_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE tb_usuario
 (
@@ -15,7 +15,7 @@ CREATE TABLE tb_usuario
   senha character varying(10485760) NOT NULL,
   id_device integer,
   CONSTRAINT tb_usuario_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE tb_veiculo
 (
@@ -23,7 +23,7 @@ CREATE TABLE tb_veiculo
   nome character varying,
   marca character varying,
   CONSTRAINT tb_veiculo_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE tb_motorista
 (
@@ -32,7 +32,7 @@ CREATE TABLE tb_motorista
   idade integer,
   telefone character varying,
   CONSTRAINT tb_motorista_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE tb_historico
 (
@@ -47,7 +47,7 @@ CREATE TABLE tb_historico
   CONSTRAINT tb_historico_id_usuario_fkey FOREIGN KEY (id_usuario)
       REFERENCES tb_usuario (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
 
 CREATE TABLE tb_entregas
 (
@@ -63,4 +63,4 @@ CREATE TABLE tb_entregas
   CONSTRAINT tb_entregas_id_veiculo_fkey FOREIGN KEY (id_veiculo)
       REFERENCES tb_veiculo (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
