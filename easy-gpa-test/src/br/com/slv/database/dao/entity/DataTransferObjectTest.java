@@ -27,7 +27,7 @@ public class DataTransferObjectTest {
 	@Test
 	public void insertVeiculo() throws SQLException, ClassNotFoundException{
 		Connection conn = ConnectionFactory.getConnection();
-		DataTransferObject dto = new DataTransferObject(conn);
+		DataTransferObject dto = new DataTransferObject();
 		ArrayList<TransferObject> tos = MockTransferObjects.getVeiculoTOs();
 		String result = dto.transact(tos);
 		assertEquals(result, "success");
@@ -35,7 +35,7 @@ public class DataTransferObjectTest {
 	@Test
 	public void insertMotorista() throws SQLException, ClassNotFoundException{
 		Connection conn = ConnectionFactory.getConnection();
-		DataTransferObject dto = new DataTransferObject(conn);
+		DataTransferObject dto = new DataTransferObject();
 		ArrayList<TransferObject> tos = MockTransferObjects.getMotoristaTOs();
 		String result = dto.transact(tos);
 		assertEquals(result, "success");
@@ -44,7 +44,7 @@ public class DataTransferObjectTest {
 	@Test
 	public void insertFake2() throws SQLException, ClassNotFoundException{
 		Connection conn = ConnectionFactory.getConnection();
-		DataTransferObject dto = new DataTransferObject(conn);
+		DataTransferObject dto = new DataTransferObject();
 		TransferObject to = new TransferObject("", null, TransferObject.INSERT_TYPE);
 		ArrayList<TransferObject> tos = new ArrayList<TransferObject>();
 		tos.add(to);
