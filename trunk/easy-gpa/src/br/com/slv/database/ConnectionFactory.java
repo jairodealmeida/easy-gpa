@@ -85,9 +85,9 @@ public class ConnectionFactory {
     }
     
     public static Connection getConnection() throws SQLException, ClassNotFoundException{
-        if(conn == null){
+        //if(conn == null){
             connect();
-        }
+        //}
         return conn;
     }
 

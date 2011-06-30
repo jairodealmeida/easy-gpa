@@ -1,6 +1,7 @@
 package br.com.slv.database.dao;
 
 import br.com.slv.database.DatabaseDAOImpl;
+import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.model.TransferObject;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.statement.StatementFactory;
@@ -20,9 +21,32 @@ public class DataTransferObject extends DatabaseDAOImpl {
 	static Logger log = Logger.getLogger(DataTransferObject.class);
     private Map<Integer,String> transaction = new HashMap<Integer,String>();
     
-    public DataTransferObject(Connection connection){
-    	this.setConnection(connection);
+    
+    public ArrayList<Entity> select(String tableName, String whereClause){
+    	/*
+    	ArrayList<Entity> items = new ArrayList<Entity>();
+        StatementFactory statement = new StatementFactory(null);
+        StringBuilder sqls = statement.createStatementSQL();
+        if(sqls!=null){
+            PreparedStatement pstm = super.prepareStatement(sqls.toString());
+            statement.prepareStatement( pstm );  
+            try  {
+                if(pstm.executeUpdate()<1){
+                    throw new NullPointerException("transact error ...");
+                }
+                String nativeSql =super.nativeSQL(sqls.toString());
+               	return items;
+            } catch (Exception ex)  {
+            	
+            	log.error(sqls);
+                log.error(ex.getMessage(), ex); 
+            }
+        }else{
+            log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
+        } */
+        return null;
     }
+    
     /**
      * transaction method to represents a client EditFeature
      * @param tos
@@ -61,7 +85,7 @@ public class DataTransferObject extends DatabaseDAOImpl {
             return "fail";
         }	
     }
-    private String transact(TransferObject to) throws Exception {
+    public String transact(TransferObject to) throws Exception {
             StatementFactory statement = new StatementFactory(to);
             StringBuilder sqls = statement.createStatementSQL();
             if(sqls!=null){
@@ -72,14 +96,16 @@ public class DataTransferObject extends DatabaseDAOImpl {
                         throw new NullPointerException("transact error ...");
                     }
                     String nativeSql =super.nativeSQL(sqls.toString());
-                    return nativeSql;
+                    return "success";
                 } catch (Exception ex)  {
+                	
+                	log.error(sqls);
                     log.error(ex.getMessage(), ex); 
                 }
             }else{
                 log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
             } 
-            return sqls.toString();
+            return "fail";
         }
 
 }
