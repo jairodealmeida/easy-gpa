@@ -44,8 +44,10 @@ public class DatabaseDAOImpl implements DatabaseDAO{
 	}
 
 	public boolean connect(boolean commit) throws Exception {
-        Class.forName(getDriver());
-        setConnection(DriverManager.getConnection(url, user, pass));
+        //Class.forName(getDriver());
+        //setConnection(DriverManager.getConnection(url, user, pass));
+		Connection connection = ConnectionFactory.getConnection();
+		setConnection(connection);
         return true;
 	}
 

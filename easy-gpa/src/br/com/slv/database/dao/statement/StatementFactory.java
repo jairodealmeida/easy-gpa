@@ -1,5 +1,6 @@
 package br.com.slv.database.dao.statement;
 
+import br.com.slv.database.dao.DataTransferObject;
 import br.com.slv.database.dao.model.TransferObject;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.statement.operation.DeleteStatement;
@@ -13,8 +14,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class StatementFactory {
+import org.apache.log4j.Logger;
 
+public class StatementFactory {
+	   static Logger log = Logger.getLogger(StatementFactory.class);
         private TransferObject to;
         private StringBuilder fieldValues = new StringBuilder();
         
@@ -53,6 +56,7 @@ public class StatementFactory {
                         throw new NullPointerException("field is null");
                     }
                 }
+                log.info("fields..: " + fieldValues);
             }
         }
  

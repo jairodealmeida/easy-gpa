@@ -23,6 +23,7 @@ public class DeleteStatement implements Deletable {
                     String tableName = to.getTableName();
                      if(tableName!=null && !tableName.equalsIgnoreCase("")){
                     	 result.append("DELETE ");
+                    	 result.append("FROM ");
                          result.append(tableName);
                          result.append(this.getParameters());
                          result.append(cws);
