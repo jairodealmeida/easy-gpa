@@ -1,5 +1,6 @@
 package br.com.slv.database.dao.delegate;
 
+import br.com.gpa.util.Logger;
 import br.com.slv.database.ConnectionFactory;
 import br.com.slv.database.dao.DataTransferObject;
 import br.com.slv.database.dao.entity.Entity;
@@ -15,7 +16,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.apache.log4j.Logger;
 
 public class DataTransferDelegate {
  
@@ -57,19 +57,12 @@ public class DataTransferDelegate {
 	}
     
 	public DataTransferDelegate(){
-	//	try {
-			//Connection connection = ConnectionFactory.getConnection();
-			dao = new DataTransferObject();
-		//} catch (SQLException e) {
-	//		e.printStackTrace();
-	//	} catch (ClassNotFoundException e) {
-	//		e.printStackTrace();
-	//	}
+		dao = new DataTransferObject();
 	}
 	
-	public ArrayList<Entity> select(String tableName, String whereClause){
+	public ArrayList<Entity> select(String entityClassName, String whereClause){
 		try {
-			ArrayList<Entity> entities = dao.select(tableName, whereClause);
+			ArrayList<Entity> entities = dao.select(entityClassName, whereClause);
 			return entities;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e); 

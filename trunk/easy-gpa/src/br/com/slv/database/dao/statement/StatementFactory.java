@@ -1,10 +1,12 @@
 package br.com.slv.database.dao.statement;
 
+import br.com.gpa.util.Logger;
 import br.com.slv.database.dao.DataTransferObject;
 import br.com.slv.database.dao.model.TransferObject;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.statement.operation.DeleteStatement;
 import br.com.slv.database.dao.statement.operation.InsertStatement;
+import br.com.slv.database.dao.statement.operation.SelectStatement;
 import br.com.slv.database.dao.statement.operation.UpdateStatement;
 import br.com.slv.database.dao.statement.transacts.Transactionable;
 
@@ -13,8 +15,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import org.apache.log4j.Logger;
 
 public class StatementFactory {
 	   static Logger log = Logger.getLogger(StatementFactory.class);
@@ -113,16 +113,22 @@ public class StatementFactory {
         }
         
         private Transactionable parseToTransactionable(TransferObject to) throws Exception{
-            int transactionType = to.getTransactionType();
-            switch (transactionType)  {
-                case TransferObject.INSERT_TYPE: 
-                    return new InsertStatement(to);
-                case TransferObject.UPDATE_TYPE: 
-                    return new UpdateStatement(to);
-                case TransferObject.DELETE_TYPE: 
-                    return new DeleteStatement(to);
-                default: 
-                    throw new NullPointerException("transaction type not exist");
+        	if(to!=null){
+	            int transactionType = to.getTransactionType();
+	            switch (transactionType)  {
+	                case TransferObject.INSERT_TYPE: 
+	                    return new InsertStatement(to);
+	                case TransferObject.UPDATE_TYPE: 
+	                    return new UpdateStatement(to);
+	                case TransferObject.DELETE_TYPE: 
+	                    return new DeleteStatement(to);
+	                case TransferObject.READ_TYPE:
+	                	return new SelectStatement(to);
+	                default: 
+	                    throw new NullPointerException("transaction type not exist");
+	            }
+            }else{
+            	return new SelectStatement(to);
             }
         }
 
