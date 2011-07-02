@@ -8,7 +8,8 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import br.com.gpa.util.Logger;
+
 
 public class DatabaseDAOImpl implements DatabaseDAO{
 	static Logger log = Logger.getLogger(DatabaseDAOImpl.class);
@@ -44,8 +45,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
 	}
 
 	public boolean connect(boolean commit) throws Exception {
-        //Class.forName(getDriver());
-        //setConnection(DriverManager.getConnection(url, user, pass));
 		Connection connection = ConnectionFactory.getConnection();
 		setConnection(connection);
         return true;

@@ -1,5 +1,6 @@
 package br.com.slv.database.dao;
 
+import br.com.gpa.util.Logger;
 import br.com.slv.database.DatabaseDAOImpl;
 import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.model.TransferObject;
@@ -8,45 +9,54 @@ import br.com.slv.database.dao.statement.StatementFactory;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 public class DataTransferObject extends DatabaseDAOImpl {
  
 	static Logger log = Logger.getLogger(DataTransferObject.class);
     private Map<Integer,String> transaction = new HashMap<Integer,String>();
     
-    
-    public ArrayList<Entity> select(String tableName, String whereClause){
-    	/*
-    	ArrayList<Entity> items = new ArrayList<Entity>();
-        StatementFactory statement = new StatementFactory(null);
-        StringBuilder sqls = statement.createStatementSQL();
-        if(sqls!=null){
-            PreparedStatement pstm = super.prepareStatement(sqls.toString());
-            statement.prepareStatement( pstm );  
-            try  {
-                if(pstm.executeUpdate()<1){
-                    throw new NullPointerException("transact error ...");
-                }
-                String nativeSql =super.nativeSQL(sqls.toString());
-               	return items;
-            } catch (Exception ex)  {
-            	
-            	log.error(sqls);
-                log.error(ex.getMessage(), ex); 
-            }
-        }else{
-            log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
-        } */
+    /**
+     * 
+     * @param entityName - 
+     * @param whereClause
+     * @return
+     */
+    public ArrayList<Entity> select(String entityClassName, String whereClause){
+       	//ArrayList<Entity> items = new ArrayList<Entity>();
+    	try {
+    		//Entity entityRoot = (Entity)Class.forName( entityClassName ).newInstance();	
+            StatementFactory statement = new StatementFactory(null);
+            StringBuilder sqls = statement.createStatementSQL();
+            if(sqls!=null){
+                PreparedStatement pstm = super.prepareStatement(sqls.toString());
+                statement.prepareStatement( pstm );  
+                ResultSet rs = pstm.executeQuery();
+                ArrayList<Entity> entities = this.getEntitys(rs);
+                return entities;
+            }else{
+                log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
+            } 		
+		} catch (Exception e) {
+			log.error(e);
+		} 
+		return null;
+    }
+    private ArrayList<Entity> getEntitys( ResultSet rs) throws SQLException{
+        while(rs.next()){
+        	String test = rs.getString(0);
+           	//TransferObject to = new TransferObject(
+           	//		tableName, 
+           	//		fields, 
+           	//		TransferObject.READ_TYPE);
+        }
         return null;
     }
-    
     /**
      * transaction method to represents a client EditFeature
      * @param tos
@@ -98,8 +108,7 @@ public class DataTransferObject extends DatabaseDAOImpl {
                     String nativeSql =super.nativeSQL(sqls.toString());
                     return "success";
                 } catch (Exception ex)  {
-                	
-                	log.error(sqls);
+                	log.error(sqls.toString());
                     log.error(ex.getMessage(), ex); 
                 }
             }else{

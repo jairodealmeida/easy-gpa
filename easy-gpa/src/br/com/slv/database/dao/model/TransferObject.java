@@ -9,6 +9,7 @@ public class TransferObject implements Serializable{
     public static final int INSERT_TYPE = 1;
     public static final int UPDATE_TYPE = 2;
     public static final int DELETE_TYPE = 3;
+    public static final int READ_TYPE = 4;
     
 	private String tableName;
 	private ArrayList<FieldTO> primaryKeys;
