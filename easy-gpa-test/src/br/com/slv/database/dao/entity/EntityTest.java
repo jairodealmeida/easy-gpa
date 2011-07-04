@@ -30,14 +30,14 @@ public class EntityTest {
 	
 	@Test
 	public void delete(){
-		Entity e = new Usuario(3, "test", "test", "test", 1);
+		Entity e = new Usuario(6, "test", "test", "test", 1);
 		String result = delegate.delete(e);
 		assertNotNull(result);
 		assertEquals("success", result);
 	}
 	@Test
 	public void select(){
-		//TODO delegate.
+		delegate.select("br.com.slv.database.dao.entity.Usuario", "nomeCompleto = 'test'");
 	}
 	
 
