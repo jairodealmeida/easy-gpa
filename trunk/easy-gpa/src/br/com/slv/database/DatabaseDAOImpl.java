@@ -20,7 +20,7 @@ public class DatabaseDAOImpl implements DatabaseDAO{
     private String pass;
     private Connection connection;
     /**
-     * TODO comentary
+     * TODO commentary
      */
 	public void close() throws SQLException {
         try {
