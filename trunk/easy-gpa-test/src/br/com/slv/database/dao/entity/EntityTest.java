@@ -1,6 +1,8 @@
 package br.com.slv.database.dao.entity;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import br.com.slv.database.dao.delegate.DataTransferDelegate;
@@ -37,7 +39,8 @@ public class EntityTest {
 	}
 	@Test
 	public void select(){
-		delegate.select("br.com.slv.database.dao.entity.Usuario", "nomeCompleto = 'test'");
+		ArrayList<TransferObject> list = delegate.select("TB_USUARIO", "nome_completo = 'test'");
+		assertNotNull(list);
 	}
 	
 
