@@ -1,22 +1,31 @@
 package br.com.slv.database.dao.statement.operation;
 
-import br.com.slv.database.dao.model.TransferObject;
 import br.com.slv.database.dao.statement.transacts.Selectable;
-
+/**
+ * Class to make a selection SQL statement
+ * @author jairo.almeida
+ * @since 0.0.1	
+ */
 public class SelectStatement implements Selectable{
 	
-	private TransferObject to;
+	private String tableName;
+	private String whereClause;
 	
-	public SelectStatement(TransferObject feature){
-        this.to = feature;
+	public SelectStatement(String tableName, String whereClause){
+        this.tableName = tableName;
+        this.whereClause = whereClause;
     }
 	//TODO creating a create statements to select
 	public StringBuilder createStatement() {
-		//StringBuilder result = new StringBuilder();
-		//result.append("SELECT * FROM ");
-		//result.append(tableName);
-		//result.append("WHERE ");
-		//result.append(whereClause);
-		return null;
+		if(tableName!=null && whereClause!=null){
+			StringBuilder result = new StringBuilder();
+			result.append("SELECT * FROM ");
+			result.append(tableName);
+			result.append(" WHERE ");
+			result.append(whereClause);
+			return result;
+		}else{
+			throw new NullPointerException("where not found");
+		}
 	}
 }
