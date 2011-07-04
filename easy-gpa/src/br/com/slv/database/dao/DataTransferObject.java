@@ -10,53 +10,72 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-
+/**
+ * Implentation to data tranfer objects
+ * This practice ar modified to create a EASY-GPA Library
+ */
 public class DataTransferObject extends DatabaseDAOImpl {
  
 	static Logger log = Logger.getLogger(DataTransferObject.class);
     private Map<Integer,String> transaction = new HashMap<Integer,String>();
     
     /**
-     * 
-     * @param entityName - 
-     * @param whereClause
-     * @return
+     * Method to get entities from ResultSet 
+     * @param tableName - database table name
+     * @param rs - ResultSet from statement executed 
+     * @return ArrayList<TransferObject> entities from database and statement
+     * @throws SQLException
+     * TODO modify ArrayList<TransferObject> to TransferObjectColection implemented to easy-gpa
      */
-    public ArrayList<Entity> select(String entityClassName, String whereClause){
-       	//ArrayList<Entity> items = new ArrayList<Entity>();
-    	try {
-    		//Entity entityRoot = (Entity)Class.forName( entityClassName ).newInstance();	
-            StatementFactory statement = new StatementFactory(null);
-            StringBuilder sqls = statement.createStatementSQL();
-            if(sqls!=null){
-                PreparedStatement pstm = super.prepareStatement(sqls.toString());
-                statement.prepareStatement( pstm );  
-                ResultSet rs = pstm.executeQuery();
-                ArrayList<Entity> entities = this.getEntitys(rs);
-                return entities;
-            }else{
-                log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
-            } 		
-		} catch (Exception e) {
-			log.error(e);
-		} 
-		return null;
-    }
-    private ArrayList<Entity> getEntitys( ResultSet rs) throws SQLException{
+    private ArrayList<TransferObject> getEntitys( String tableName, ResultSet rs) throws SQLException{
+    	ArrayList<TransferObject> entitys = new ArrayList<TransferObject>();
         while(rs.next()){
-        	String test = rs.getString(0);
-           	//TransferObject to = new TransferObject(
-           	//		tableName, 
-           	//		fields, 
-           	//		TransferObject.READ_TYPE);
+        	ArrayList<String> columns = this.getColumnNames(rs);
+        	ArrayList<FieldTO> fields = new ArrayList<FieldTO>();
+        	for (String columnLabel : columns) {
+        		Object columnValue = rs.getObject(columnLabel);
+        		fields.add(new FieldTO(columnLabel, columnValue)); 
+			}
+           	TransferObject to = new TransferObject(
+           			tableName, 
+           			fields, 
+           			TransferObject.READ_TYPE);
+           	entitys.add(to);
         }
-        return null;
+        return entitys;
     }
+    /**
+     * Method to get columns from result set query
+     * @param rs - ResultSet from statement
+     * @return ArrayList<String> - Column names
+     * @throws SQLException
+     */
+    private ArrayList<String> getColumnNames(ResultSet rs) throws SQLException {
+        if (rs == null) {
+          return null;
+        }
+        ResultSetMetaData rsMetaData = rs.getMetaData();
+        int numberOfColumns = rsMetaData.getColumnCount();
+
+        // get the column names; column indexes start from 1
+        ArrayList<String> columns = new ArrayList<String>();
+        for (int i = 1; i < numberOfColumns + 1; i++) {
+          String columnName = rsMetaData.getColumnName(i);
+          // Get the name of the column's table name
+          //String tableName = rsMetaData.getTableName(i);
+          //System.out.println("column name=" + columnName + " table=" + tableName + "");
+          columns.add(columnName);
+        }
+		return columns;
+      }
+    
     /**
      * transaction method to represents a client EditFeature
      * @param tos
@@ -73,7 +92,7 @@ public class DataTransferObject extends DatabaseDAOImpl {
 	/**
 	 * transact entity's in database instance 
 	 * @param tos - Transfer Objects in database
-	 * @return transact or fail
+	 * @return "transact" or "fail"
 	 * @throws Exception
 	 */
     private String transactEntitys(ArrayList<TransferObject> tos) throws Exception {
@@ -95,6 +114,12 @@ public class DataTransferObject extends DatabaseDAOImpl {
             return "fail";
         }	
     }
+    /**
+     * Persistence to Transact Object
+     * @param to - Transact Object
+     * @return "success" or "fail"
+     * @throws Exception
+     */
     public String transact(TransferObject to) throws Exception {
             StatementFactory statement = new StatementFactory(to);
             StringBuilder sqls = statement.createStatementSQL();
@@ -106,6 +131,7 @@ public class DataTransferObject extends DatabaseDAOImpl {
                         throw new NullPointerException("transact error ...");
                     }
                     String nativeSql =super.nativeSQL(sqls.toString());
+                    log.info(nativeSql);
                     return "success";
                 } catch (Exception ex)  {
                 	log.error(sqls.toString());
@@ -115,7 +141,32 @@ public class DataTransferObject extends DatabaseDAOImpl {
                 log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
             } 
             return "fail";
-        }
+    }
+    /**
+     * Method to execute a select statement into database
+     * @param tableName - name of database table
+     * @param whereClause - where database clause
+     * @return ArrayList<Entity> - Entitys from database 
+     * 							   into where and table clauses
+     * TODO statement.prepareStatement( pstm ) create a method to work with prepared statement 
+     */
+    public ArrayList<TransferObject> select(String tableName, String whereClause){
+    	try {	
+            StatementFactory statement = new StatementFactory(tableName, whereClause);
+            StringBuilder sqls = statement.createStatementSQL(tableName, whereClause);
+            if(sqls!=null){
+                PreparedStatement pstm = super.prepareStatement(sqls.toString()); 
+                ResultSet rs = pstm.executeQuery();
+                ArrayList<TransferObject> entities = this.getEntitys(tableName, rs);
+                return entities;
+            }else{
+                log.error("prepare sql fail", new NullPointerException("prepare sql fail"));
+            } 		
+		} catch (Exception e) {
+			log.error(e);
+		} 
+		return null;
+    }
 
 }
  

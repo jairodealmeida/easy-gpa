@@ -16,9 +16,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * Class to open the database methods to use
+ * Connect to database
+ * Execute a SQL statements
+ * And close a database connection
+ * @author jairo.almeida
+ * 
+ */
 public class DataTransferDelegate {
- 
+	/** class of works with database instance */
 	private DataTransferObject dao = null;
 	 @Deprecated
 	private ArrayList<FieldTO> primaryKeyTos;
@@ -60,15 +67,7 @@ public class DataTransferDelegate {
 		dao = new DataTransferObject();
 	}
 	
-	public ArrayList<Entity> select(String entityClassName, String whereClause){
-		try {
-			ArrayList<Entity> entities = dao.select(entityClassName, whereClause);
-			return entities;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e); 
-		}
-		return null;
-	}
+
 	
 	/**
 	 * method will use to insert objects
@@ -127,7 +126,12 @@ public class DataTransferDelegate {
 		return "fail";
 	}
 
-	
+	/**
+	 * Method to transact objects into database
+	 * @param features - Instantiate transfer objects
+	 * @return String success or fail
+	 * @throws Exception
+	 */
 	private String transact(ArrayList<TransferObject> features)  throws Exception {
 	    long start, end;
 	    start = (new java.util.Date()).getTime(); 
@@ -150,7 +154,12 @@ public class DataTransferDelegate {
             }
             
     }
-	
+	/**
+	 * Method to transact object into database
+	 * @param feature - Instantiate transfer object
+	 * @return String success or fail
+	 * @throws Exception
+	 */
 	private String transact(TransferObject feature)  throws Exception {
 	    long start, end;
 	    start = (new java.util.Date()).getTime(); 
@@ -172,6 +181,29 @@ public class DataTransferDelegate {
                 throw new NullPointerException("don't have features to transact");
             }	
 	}
+	/**
+	 * Method to get resultset collections from database
+	 * this methodo works with select sintax
+	 * @param tableName - Table name
+	 * @param whereClause - Where clause
+	 * @return ArrayList<TransferObject> select entities result from database
+	 */
+	public ArrayList<TransferObject> select(String tableName, String whereClause){
+		try {
+		    long start, end;
+		    start = (new java.util.Date()).getTime(); 
+            dao.connect( true );
+			ArrayList<TransferObject> entities = dao.select(tableName, whereClause);
+            dao.close();
+            end = (new java.util.Date()).getTime();
+            log.info("Time to query: " + (end - start) + " ms");
+			return entities;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e); 
+		}
+		return null;
+	}
+	
 	/**
 	 * method to prepare the statments by transact entity persistences
 	 * using to get a fields of entitys and setting a obfuscate values

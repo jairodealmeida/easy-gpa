@@ -8,37 +8,96 @@ import br.com.slv.database.dao.statement.operation.DeleteStatement;
 import br.com.slv.database.dao.statement.operation.InsertStatement;
 import br.com.slv.database.dao.statement.operation.SelectStatement;
 import br.com.slv.database.dao.statement.operation.UpdateStatement;
+import br.com.slv.database.dao.statement.transacts.Selectable;
+import br.com.slv.database.dao.statement.transacts.Stantmentable;
 import br.com.slv.database.dao.statement.transacts.Transactionable;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * Class to statement factory
+ * Before execute the stamements the library GPA needs to create a statements
+ * using two statements abstractios Transactionable and Selectable
+ * Transactionable - SQL Inserts, Updates and Deletes
+ * Selectable - SQL Selects
+ * @author jairo.almeida
+ */
 public class StatementFactory {
-	   static Logger log = Logger.getLogger(StatementFactory.class);
+	    static  Logger log = Logger.getLogger(StatementFactory.class);
         private TransferObject to;
+        private String tableName;
+        private String whereClause;
         private StringBuilder fieldValues = new StringBuilder();
         
         public StatementFactory(TransferObject to){
             this.to = to;
         }
-        
+        public StatementFactory(String tableName,
+								String whereClause){
+            this.tableName = tableName;
+            this.whereClause = whereClause;
+        }
+        /**
+         * Method to create a SQL Statement
+         * To transact statements use Transactionable interface
+         * To select statements use Selectable interface
+         * @return StringBuilder - Statement to database execute
+         * @throws Exception
+         */
         public StringBuilder createStatementSQL() throws Exception{
-            Transactionable sql = this.parseToTransactionable(to);
+        	
+        	if(to!=null){
+        		Transactionable sql = this.getInstance(to);
+           		if(sql!=null){
+        			return sql.createStatement();
+        		}else{
+        			throw new NullPointerException("transactionable item is null");
+        		}
+        	}else{
+        		Selectable sql = this.getInstance(tableName, whereClause);
+           		if(sql!=null){
+        			return sql.createStatement();
+        		}else{
+        			throw new NullPointerException("transactionable item is null");
+        		}
+        	}
+ 
+        }
+        /**
+         * Method to create a SQL Statement 
+         * @param tableName - database table name
+         * @param whereClause - where clause
+         * @return Statement sql
+         * @throws Exception
+         */
+        public StringBuilder createStatementSQL(String tableName,
+        										String whereClause) throws Exception{
+            Selectable sql = this.getInstance(tableName, whereClause);
             if(sql!=null){
                 return sql.createStatement();
             }else{
                 throw new NullPointerException("transactionable item is null");
             }
         }
-        
+        /**
+         * Method used to prepared statement
+         * @param pstm - PreparedStatement instantied
+         * @throws SQLException
+         */
         public void prepareStatement(PreparedStatement pstm ) throws SQLException {   
             ArrayList<FieldTO> allFields = this.getClauseFields(to);
             this.preparedFields(pstm, allFields);
         }
-
+        /**
+         * Method to prepare statements  
+         * @param pstm - PreparedStatement instantied
+         * @param clauseFields - ArrayList<FieldTO> fields used in prepared statement
+         * @throws SQLException
+         */
         private void preparedFields(PreparedStatement pstm , ArrayList<FieldTO> clauseFields ) throws SQLException {
             if(clauseFields!=null){
                 for(int countFields=0; countFields < clauseFields.size(); countFields++){
@@ -59,7 +118,12 @@ public class StatementFactory {
                 log.info("fields..: " + fieldValues);
             }
         }
- 
+        /**
+         * Get fields to make a where clause
+         * @param to - TransferObject transact object
+         * @return ArrayList<FieldTO> - Fields to make where
+         * @throws SQLException
+         */
         private ArrayList<FieldTO> getClauseFields(TransferObject to) throws SQLException {
             ArrayList<FieldTO> clauseFields = new ArrayList<FieldTO>();
             //attributs to transact
@@ -71,31 +135,14 @@ public class StatementFactory {
             }
             return clauseFields;
         }
-        private boolean isInteger(String num){
-            try{
-                Integer.parseInt(num);
-                return true;
-            } catch(NumberFormatException nfe) {
-                return false;
-            }
-        }
-        private boolean isDouble(String num){
-            try{
-                Double.parseDouble(num);
-                return true;
-            } catch(NumberFormatException nfe) {
-                return false;
-            }
-        }
-        private boolean isLong(String num){
-            try{
-                Long.parseLong(num);
-                return true;
-            } catch(NumberFormatException nfe) {
-                return false;
-            }
-        }
-        
+        /**
+         * Method to set a prepared statement values before defined to "?"
+         * @param index - index to set value in statement
+         * @param value - value to setting
+         * @param type - type of value defined
+         * @param pstm - Prepared statement used
+         * @throws SQLException
+         */
         private void setValue(int index, 
                               Object value, 
                               int type,
@@ -111,8 +158,13 @@ public class StatementFactory {
                 throw new NullPointerException("connection is null");
             }
         }
-        
-        private Transactionable parseToTransactionable(TransferObject to) throws Exception{
+        /**
+         * Method to get a instance from transactionable statements 
+         * @param to - TransferObject
+         * @return Transactionable object
+         * @throws Exception
+         */
+        private Transactionable getInstance(TransferObject to) throws Exception{
         	if(to!=null){
 	            int transactionType = to.getTransactionType();
 	            switch (transactionType)  {
@@ -122,20 +174,30 @@ public class StatementFactory {
 	                    return new UpdateStatement(to);
 	                case TransferObject.DELETE_TYPE: 
 	                    return new DeleteStatement(to);
-	                case TransferObject.READ_TYPE:
-	                	return new SelectStatement(to);
 	                default: 
 	                    throw new NullPointerException("transaction type not exist");
 	            }
             }else{
-            	return new SelectStatement(to);
+            	return null;
             }
         }
-
-
-    public StringBuilder getFieldValues() {
-        return fieldValues;
-    }
+        /**
+         *  Method to get a instance from selectable statements 
+         * @param tableName - database table name
+         * @param whereClause - where clause
+         * @return Selectable Object
+         * @throws Exception
+         */
+	    private Selectable getInstance(String tableName, String whereClause) throws Exception{
+	    	return new SelectStatement(tableName, whereClause);
+	    }
+	    /**
+	     * get field values to where clause
+	     * @return StringBuilder string to values where clause
+	     */
+	    public StringBuilder getFieldValues() {
+	        return fieldValues;
+	    }
 
 
 }

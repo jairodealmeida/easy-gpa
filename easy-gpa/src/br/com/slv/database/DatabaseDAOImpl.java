@@ -19,7 +19,9 @@ public class DatabaseDAOImpl implements DatabaseDAO{
     private String user;
     private String pass;
     private Connection connection;
-    
+    /**
+     * TODO comentary
+     */
 	public void close() throws SQLException {
         try {
             if ( getConnection() != null && ! getConnection().isClosed() ) {
