@@ -20,7 +20,11 @@ public class ShapefileUtil {
 	private ShapefileDataStore util;
 	
 	public ShapefileUtil(URL url) throws Exception{
-		util = new ShapefileDataStore(url);
+		if(url!=null){
+			util = new ShapefileDataStore(url);
+		}else{
+			throw new NullPointerException("Null URL for ShapefileDataSource");
+		}
 	}
 	public Iterator<Feature> getFeatures() throws Exception{
 		FeatureSource fs = util.getFeatureSource();
