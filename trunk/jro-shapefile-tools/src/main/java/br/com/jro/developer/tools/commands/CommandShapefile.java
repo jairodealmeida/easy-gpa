@@ -19,10 +19,16 @@ public class CommandShapefile extends Command{
 	}
 	private void commandGetWkts(String pathName) throws Exception{
         if(pathName!=null){
+        	if(!pathName.startsWith("file:")){
+        		pathName = "file:" + pathName;
+        	}
         	URL url = new URL(pathName);
     		ShapefileUtil util = new ShapefileUtil(url);
     		List<String> wkts = util.getWktList();
     		System.out.println( wkts.toString() );
+        }else{
+        	System.out.println("Is necessary set shapefile file name - " +
+        					   "example file:/c:/temp.test.shp");
         }
 	}
 }

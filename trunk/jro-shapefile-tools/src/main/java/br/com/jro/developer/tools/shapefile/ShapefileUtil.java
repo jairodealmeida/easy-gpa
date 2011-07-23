@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.feature.Feature;
 import org.geotools.feature.FeatureCollection;
+import org.opengis.feature.Feature;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -23,7 +23,6 @@ public class ShapefileUtil {
 		util = new ShapefileDataStore(url);
 	}
 	public Iterator<Feature> getFeatures() throws Exception{
-		List<String> wkts = new ArrayList<String>();
 		FeatureSource fs = util.getFeatureSource();
 		FeatureCollection fc = fs.getFeatures();
 		@SuppressWarnings("unchecked")
@@ -31,24 +30,27 @@ public class ShapefileUtil {
 		return i;
 	}
 	public List<String> getWktList() throws Exception {
+		Iterator<Feature> i = this.getFeatures();
 		List<String> wkts = new ArrayList<String>();
-		FeatureSource fs = util.getFeatureSource();
-		FeatureCollection fc = fs.getFeatures();
-		@SuppressWarnings("unchecked")
-		Iterator<Feature> i = (Iterator<Feature>)fc.iterator();
 		while(i.hasNext()){
 			Feature f = i.next();
-			Geometry g = f.getDefaultGeometry();
-			String wkt = this.getWKT(g);
+			//Geometry g = f.getDefaultGeometry();
+			
+			String wkt = this.getWKT(f);
 			wkts.add(wkt);
 		}
 		return wkts;
 	}
-	private String getWKT(Geometry g){
+	private String getWKT(Feature g){
 		if(g!=null){
 			return g.toString();
 		}else{
 			return null;
 		}
 	}
+	//private String getKML(){
+		//Parser parser = new Parser(new KMLConfiguration());
+		//SimpleFeature f = (SimpleFeature) parser.parse( inputStream );
+		//Collection placemarks = (Collection) f.getAttribute("Feature");
+	//}
 }

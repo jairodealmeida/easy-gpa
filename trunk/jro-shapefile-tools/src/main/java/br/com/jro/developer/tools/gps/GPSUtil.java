@@ -19,9 +19,7 @@ public class GPSUtil {
 	/**
 	 * Méthodo get para setar ArrayList com os marcos virtuais contidos de
 	 * arquivo GPS (txt)
-	 * 
-	 * @param filepath
-	 *            - String
+	 * @param filepath - String
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -31,14 +29,11 @@ public class GPSUtil {
 			BufferedReader read = new BufferedReader(file);
 			int countVirtualMarks = 0;
 			String line = "";
-			System.out.println("\nCarregando marcos virtuais do arquivo ..: "
-					+ filepath + "\n");
+			System.out.println("\nCarregando marcos virtuais do arquivo ..: " + filepath + "\n");
 			while ((line = read.readLine()) != null) {
 				String[] splitline = line.split(",");
 				if (splitline != null) {
-					if (splitline[0].equalsIgnoreCase("T")) // é um marco
-															// implementado
-					{
+					if (splitline[0].equalsIgnoreCase("T")){ // é um marco implementado
 						countVirtualMarks++; // conta ele
 						this.virtualMarks.add(line);
 						System.out.println(line);
@@ -47,18 +42,13 @@ public class GPSUtil {
 			}
 			countVirtualMarks++;
 			if (virtualMarks.size() > 1) {
-				this.virtualMarks.add(virtualMarks.get(0)); // para fechar o
-															// polygono
+				this.virtualMarks.add(virtualMarks.get(0)); // para fechar o polygono
 				System.out.println(virtualMarks.get(0));
 			}
 			this.totalVirtualMarks = countVirtualMarks;
 		} catch (FileNotFoundException e) {
-			// log.error("Error = Classe-Gps2Shapefile Metodo-setVirtualMarks ..: Erro ao setar o marcos virtuais ...\n"
-			// + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// log.error("Error = Classe-Gps2Shapefile Metodo-setVirtualMarks ..: Erro ao setar o marcos virtuais ...\n"
-			// + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -86,9 +76,7 @@ public class GPSUtil {
 	/**
 	 * Méthodo para setar ArrayList com os marcos implementados contidos de
 	 * arquivo GPS (txt)
-	 * 
-	 * @param filepath
-	 *            - String
+	 * @param filepath - String
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -98,15 +86,11 @@ public class GPSUtil {
 			BufferedReader read = new BufferedReader(file);
 			int countImplementedMarks = 0;
 			String line = "";
-			System.out
-					.println("\nCarregando marcos implementados do arquivo ..: "
-							+ filepath + "\n");
+			System.out.println("\nCarregando marcos implementados do arquivo ..: "	+ filepath + "\n");
 			while ((line = read.readLine()) != null) {
 				String[] splitline = line.split(",");
 				if (splitline != null) {
-					if (splitline[0].equalsIgnoreCase("W")) // é um marco
-															// implementado
-					{
+					if (splitline[0].equalsIgnoreCase("W")){ // é um marco implementado
 						countImplementedMarks++; // conta ele
 						this.implementedMarks.add(line);
 						System.out.println(line);
@@ -115,20 +99,15 @@ public class GPSUtil {
 			}
 			countImplementedMarks++;
 			if (implementedMarks.size() > 1) {
-				this.implementedMarks.add(implementedMarks.get(0)); // para
-																	// fechar o
-																	// polygono
+				this.implementedMarks.add(implementedMarks.get(0)); // para fechar o polygono
 				System.out.println(implementedMarks.get(0));
 			} else
 				return;
 
 			this.totalImplementedMarks = countImplementedMarks;
 		} catch (FileNotFoundException e) {
-			// log.error("O arquivo não pode ser encontrado: \n"
-			// +e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// log.error("Erro ao tentar ler o arquivo: \n" +e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -147,16 +126,13 @@ public class GPSUtil {
 		try {
 			setVirtualMarks(filepath.getAbsolutePath());
 			Coordinate[] polygonCoordinates = new Coordinate[totalVirtualMarks];
-			System.out
-					.println("\nInfo..: Imprimindo coordenadas (marcos virtuais) ..: \n");
+			System.out.println("\nInfo..: Imprimindo coordenadas (marcos virtuais) ..: \n");
 			for (int count = 0; count < virtualMarks.size(); count++) {
 				String line = (String) virtualMarks.get(count);
 				if (line != null) {
 					String[] splitline = line.split(",");
 					if (splitline != null) {
-						if (splitline[0].equalsIgnoreCase("T")) // é um marco
-																// implementado
-						{
+						if (splitline[0].equalsIgnoreCase("T")){ // é um marco implementado
 							polygonCoordinates[count] = new Coordinate(
 									Double.parseDouble(splitline[3]),
 									Double.parseDouble(splitline[4]));
@@ -168,11 +144,9 @@ public class GPSUtil {
 			}
 			return polygonCoordinates;
 		} catch (Exception e) {
-			// log.error("Error = Classe-Gps2Shapefile Metodo-loadGpsVirtualMark ..: Erro ao carregar as coordenadas dos marcos virtuais ...\n"
-			// + e.getMessage());
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -194,23 +168,19 @@ public class GPSUtil {
 				if (line != null) {
 					String[] splitline = line.split(",");
 					if (splitline != null) {
-						if (splitline[0].equalsIgnoreCase("W")) // é um marco
-																// implementado
-						{
+						if (splitline[0].equalsIgnoreCase("W")){ // é um marco implementado
 							polygonCoordinates[count] = new Coordinate(
 									Double.parseDouble(splitline[4]),
 									Double.parseDouble(splitline[5]));
-							// log.info(splitline[4] + " , " + splitline[5]);
 						}
 					}
 				}
 			}
 			return polygonCoordinates;
 		} catch (Exception e) {
-			// log.error("Erro ao carregar as coordenadas dos marcos implementados: "
-			// +e.getMessage());
-			return null;
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 }

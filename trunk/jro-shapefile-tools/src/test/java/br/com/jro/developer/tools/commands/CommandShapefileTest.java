@@ -1,4 +1,4 @@
-package br.com.jro.developer.tools.shapefile;
+package br.com.jro.developer.tools.commands;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import br.com.jro.developer.tools.commands.Command;
 import br.com.jro.developer.tools.commands.CommandShapefile;
+import br.com.jro.developer.tools.shapefile.ShapefileUtil;
 
 
 public class CommandShapefileTest {
@@ -35,4 +36,25 @@ public class CommandShapefileTest {
 		}
 	}
 	
+	@Test
+	public void testCommandShapefile1(){
+		try {
+			Command command = new CommandShapefile();
+			URL url = ShapefileUtil.class.getResource("calc_cont.shp");
+			command.setCommandValues(new String[]{"-wkt", url.toString()});
+			command.execute();
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	@Test
+	public void testCommandShapefile2(){
+		try {
+			Command command = new CommandShapefile();
+			command.setCommandValues(new String[]{"-wkt", null});
+			command.execute();
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 }
