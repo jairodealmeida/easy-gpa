@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jro-developer-tools"/>
+	<classpathentry kind="lib" path="G:/workspace/jro-shapefile-tools/lib/miglayout-3.7-swing.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
