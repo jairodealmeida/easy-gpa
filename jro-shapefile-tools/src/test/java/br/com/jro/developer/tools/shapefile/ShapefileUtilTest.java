@@ -1,16 +1,15 @@
 package br.com.jro.developer.tools.shapefile;
 
-
 import static org.junit.Assert.*;
 
 import java.net.URL;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ShapefileUtilTest {
+
+
+public class ShapefileUtilTest{
 
 
 	@Test
