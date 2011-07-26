@@ -35,7 +35,6 @@
 package br.com.jro.gis.wkt;
 
 import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.gml2.*;
 import java.util.*;
 import java.io.*;
