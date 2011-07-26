@@ -2,7 +2,7 @@ package br.com.jro.developer.tools.commands;
 
 import java.net.URL;
 import java.util.List;
-import br.com.jro.developer.tools.shapefile.ShapefileUtil;
+import br.com.jro.developer.tools.shapefile.ShapeFile;
 
 public class CommandShapefile extends Command{
 	
@@ -23,7 +23,7 @@ public class CommandShapefile extends Command{
         		pathName = "file:" + pathName;
         	}
         	URL url = new URL(pathName);
-    		ShapefileUtil util = new ShapefileUtil(url);
+    		ShapeFile util = new ShapeFile(url);
     		List<String> wkts = util.getWktList();
     		System.out.println( wkts.toString() );
         }else{

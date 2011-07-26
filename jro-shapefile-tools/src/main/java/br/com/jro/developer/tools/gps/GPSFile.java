@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
-public class GPSUtil {
+public class GPSFile {
 	
 	private int totalVirtualMarks = 0;
 	private int totalImplementedMarks = 0;

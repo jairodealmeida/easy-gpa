@@ -1,15 +1,19 @@
 package br.com.jro.developer.tools.kml;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.geotools.data.shapefile.ShapefileDataStore;
+import org.opengis.feature.Feature;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -25,19 +29,25 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.io.gml2.GMLConstants;
 import com.vividsolutions.jts.io.gml2.GMLHandler;
 
-public class KMLUtil {
+public class KMLFile {
 	
 	private KMLReader reader;
 	
-	public KMLUtil(URL url){
+	public KMLFile(URL url) throws IOException, SAXException, URISyntaxException{
+		if(url!=null){
+			reader = new KMLReader(url);
+			reader.read();
+		}else{
+			throw new NullPointerException("Null URL for KMLFile");
+		}
+	}
+	public KMLFile(Iterator<Feature> features, URL url) {
 		if(url!=null){
 			reader = new KMLReader(url);
 		}else{
-			throw new NullPointerException("Null URL for ShapefileDataSource");
+			throw new NullPointerException("Null URL for KMLFile");
 		}
 	}
-	
-
 	
 	class KMLReader{
 		private URL filename;
@@ -45,16 +55,21 @@ public class KMLUtil {
 		public KMLReader(URL url){
 			this.filename = url;
 		}
-		
+		public void write(Iterator<Feature> features){
+			//Encoder encoder = new Encoder(new KMLConfiguration());
+			//encoder.setIndenting(true);
+
+			//encoder.encode(featureCollection, KML.kml, outputstream );
+		}
 		public void read()
-		throws IOException, SAXException{
+		throws IOException, SAXException, URISyntaxException{
 		    XMLReader xr; 
 		    xr = new org.apache.xerces.parsers.SAXParser();
 		    KMLHandler kmlHandler = new KMLHandler();
 		    xr.setContentHandler(kmlHandler);
 		    xr.setErrorHandler(kmlHandler);
-		    
-		    Reader r = new BufferedReader(new FileReader(filename.getPath()));
+		    File file = new File(filename.toURI());
+		    Reader r = new BufferedReader(new FileReader(file));
 		    LineNumberReader myReader = new LineNumberReader(r);
 		    xr.parse(new InputSource(myReader));
 		    

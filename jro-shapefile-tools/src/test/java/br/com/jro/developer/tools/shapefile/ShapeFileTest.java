@@ -9,14 +9,14 @@ import org.junit.Test;
 
 
 
-public class ShapefileUtilTest{
+public class ShapeFileTest{
 
 
 	@Test
 	public void testReadFile(){
 		try {
-			URL url = ShapefileUtil.class.getResource("calc_cont.shp");
-			ShapefileUtil util = new ShapefileUtil(url);
+			URL url = ShapeFile.class.getResource("calc_cont.shp");
+			ShapeFile util = new ShapeFile(url);
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -24,7 +24,7 @@ public class ShapefileUtilTest{
 	@Test
 	public void testReadFile1(){
 		try {
-			ShapefileUtil util = new ShapefileUtil(null);
+			ShapeFile util = new ShapeFile(null);
 			fail("não poderia passar aqui");
 		} catch (Exception e) {
 			assertEquals("Null URL for ShapefileDataSource", e.getMessage());
@@ -33,8 +33,8 @@ public class ShapefileUtilTest{
 	@Test
 	public void testGetWktList(){
 		try {
-			URL url = ShapefileUtil.class.getResource("calc_cont.shp");
-			ShapefileUtil util = new ShapefileUtil(url);
+			URL url = ShapeFile.class.getResource("calc_cont.shp");
+			ShapeFile util = new ShapeFile(url);
 			List<String> list = util.getWktList(); 
 			assertNotNull(list);
 			assertTrue(list.size()>0);

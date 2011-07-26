@@ -26,6 +26,34 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
   		<artifactId>gt-swing</artifactId>
   		<version>${geotools.version}</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.jvnet.ogc</groupId>
+  		<artifactId>gml</artifactId>
+  		<version>1.0.3</version>
+  		<type>pom</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.jvnet.ogc</groupId>
+  		<artifactId>kml</artifactId>
+  		<version>1.0.3</version>
+  		<type>pom</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.jvnet.ogc</groupId>
+  		<artifactId>kml-common</artifactId>
+  		<version>1.0.3</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.jvnet.ogc</groupId>
+  		<artifactId>kml-v_2_2_0</artifactId>
+  		<version>1.0.3</version>
+  		<type>pom</type>
+  		<scope>compile</scope>
+  	</dependency>
   </dependencies>
 
   
