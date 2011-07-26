@@ -29,7 +29,7 @@ public class Quickstart {
      */
     public static void main(String[] args) throws Exception {
         // display a data store file chooser dialog for shapefiles
-        File file = JFileDataStoreChooser.showOpenFile("shp", null);
+        File file = JFileDataStoreChooser.showOpenFile(new String[]{"shp","xml"}, null);
         if (file == null) {
             return;
         }

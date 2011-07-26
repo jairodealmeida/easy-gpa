@@ -14,12 +14,12 @@ import org.opengis.feature.Feature;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public class ShapefileUtil {
+public class ShapeFile {
 	
 
 	private ShapefileDataStore util;
 	
-	public ShapefileUtil(URL url) throws Exception{
+	public ShapeFile(URL url) throws Exception{
 		if(url!=null){
 			util = new ShapefileDataStore(url);
 		}else{
@@ -38,8 +38,6 @@ public class ShapefileUtil {
 		List<String> wkts = new ArrayList<String>();
 		while(i.hasNext()){
 			Feature f = i.next();
-			//Geometry g = f.getDefaultGeometry();
-			
 			String wkt = this.getWKT(f);
 			wkts.add(wkt);
 		}
@@ -52,6 +50,7 @@ public class ShapefileUtil {
 			return null;
 		}
 	}
+	
 	//private String getKML(){
 		//Parser parser = new Parser(new KMLConfiguration());
 		//SimpleFeature f = (SimpleFeature) parser.parse( inputStream );

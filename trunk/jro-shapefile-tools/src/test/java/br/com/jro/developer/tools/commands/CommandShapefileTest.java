@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import br.com.jro.developer.tools.commands.Command;
 import br.com.jro.developer.tools.commands.CommandShapefile;
-import br.com.jro.developer.tools.shapefile.ShapefileUtil;
+import br.com.jro.developer.tools.shapefile.ShapeFile;
 
 
 public class CommandShapefileTest {
@@ -28,7 +28,7 @@ public class CommandShapefileTest {
 	public void testCommandShapefile(){
 		try {
 			Command command = new CommandShapefile();
-			URL url = ShapefileUtil.class.getResource("calc_cont.shp");
+			URL url = ShapeFile.class.getResource("calc_cont.shp");
 			command.setCommandValues(new String[]{"-wkt", url.getPath()});
 			command.execute();
 		} catch (Exception e) {
@@ -40,7 +40,7 @@ public class CommandShapefileTest {
 	public void testCommandShapefile1(){
 		try {
 			Command command = new CommandShapefile();
-			URL url = ShapefileUtil.class.getResource("calc_cont.shp");
+			URL url = ShapeFile.class.getResource("calc_cont.shp");
 			command.setCommandValues(new String[]{"-wkt", url.toString()});
 			command.execute();
 		} catch (Exception e) {
