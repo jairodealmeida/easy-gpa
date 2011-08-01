@@ -9,6 +9,7 @@ import br.com.slv.database.dao.entity.annotation.GPAField;
 import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
+import br.com.slv.database.dao.statement.operation.StatementArguments;
 
 import java.util.ArrayList;
 import java.lang.annotation.Annotation;
@@ -188,7 +189,8 @@ public class DataTransferDelegate {
 	 * @param whereClause - Where clause
 	 * @return ArrayList<TransferObject> select entities result from database
 	 */
-	public ArrayList<TransferObject> select(String tableName, String whereClause){
+	public ArrayList<TransferObject> select(String tableName, 
+											String whereClause){
 		try {
 		    long start, end;
 		    start = (new java.util.Date()).getTime(); 
@@ -203,7 +205,30 @@ public class DataTransferDelegate {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Method to get resultset collections from database
+	 * this methodo works with select sintax
+	 * @param tableName - Table name
+	 * @param whereClause - Where clause
+	 * @return ArrayList<TransferObject> select entities result from database
+	 */
+	public TransferObject selectMax(String tableName, String maxField){
+		try {
+		    long start, end;
+		    start = (new java.util.Date()).getTime(); 
+            dao.connect( true );
+			TransferObject entity = dao.selectMax(tableName, maxField);
+            dao.close();
+            end = (new java.util.Date()).getTime();
+            log.info("Time to query: " + (end - start) + " ms");
+			return entity;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e); 
+		}
+		return null;
+	}
+
 	/**
 	 * method to prepare the statments by transact entity persistences
 	 * using to get a fields of entitys and setting a obfuscate values

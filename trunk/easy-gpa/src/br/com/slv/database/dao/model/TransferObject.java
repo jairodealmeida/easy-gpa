@@ -86,6 +86,28 @@ public class TransferObject implements Serializable{
     	}
     	return "";
     }
+    public Integer getInteger(String fieldName){
+    	 try {
+    		 return Integer.parseInt( getValue(fieldName).toString() );	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+    	 
+    }
+    public Object getValue(String fieldName){
+      	if(fields!=null){
+    		for (int i = 0; i < fields.size(); i++) {
+				FieldTO field = fields.get(i);
+				if(field!=null &&
+				   field.getName()!=null &&
+				   field.getName().equalsIgnoreCase(fieldName)){
+					return field.getValue();
+				}
+			}
+    	}
+      	return null;
+    }
         
 }//end of TranferObject
  

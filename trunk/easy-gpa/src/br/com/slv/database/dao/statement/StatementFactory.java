@@ -7,6 +7,7 @@ import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.statement.operation.DeleteStatement;
 import br.com.slv.database.dao.statement.operation.InsertStatement;
 import br.com.slv.database.dao.statement.operation.SelectStatement;
+import br.com.slv.database.dao.statement.operation.StatementArguments;
 import br.com.slv.database.dao.statement.operation.UpdateStatement;
 import br.com.slv.database.dao.statement.transacts.Selectable;
 import br.com.slv.database.dao.statement.transacts.Stantmentable;
@@ -29,17 +30,15 @@ import java.util.ArrayList;
 public class StatementFactory {
 	    static  Logger log = Logger.getLogger(StatementFactory.class);
         private TransferObject to;
-        private String tableName;
+        private StatementArguments arguments;
         private String whereClause;
         private StringBuilder fieldValues = new StringBuilder();
         
         public StatementFactory(TransferObject to){
             this.to = to;
         }
-        public StatementFactory(String tableName,
-								String whereClause){
-            this.tableName = tableName;
-            this.whereClause = whereClause;
+        public StatementFactory(StatementArguments arguments){
+            this.arguments = arguments;
         }
         /**
          * Method to create a SQL Statement
@@ -58,7 +57,7 @@ public class StatementFactory {
         			throw new NullPointerException("transactionable item is null");
         		}
         	}else{
-        		Selectable sql = this.getInstance(tableName, whereClause);
+        		Selectable sql = this.getInstance(arguments);
            		if(sql!=null){
         			return sql.createStatement();
         		}else{
@@ -74,9 +73,8 @@ public class StatementFactory {
          * @return Statement sql
          * @throws Exception
          */
-        public StringBuilder createStatementSQL(String tableName,
-        										String whereClause) throws Exception{
-            Selectable sql = this.getInstance(tableName, whereClause);
+        public StringBuilder createStatementSQL(StatementArguments arguments) throws Exception{
+            Selectable sql = this.getInstance(arguments);
             if(sql!=null){
                 return sql.createStatement();
             }else{
@@ -183,13 +181,14 @@ public class StatementFactory {
         }
         /**
          *  Method to get a instance from selectable statements 
-         * @param tableName - database table name
+         * @param StatementArguments arguments - create stantment arguments
          * @param whereClause - where clause
          * @return Selectable Object
          * @throws Exception
          */
-	    private Selectable getInstance(String tableName, String whereClause) throws Exception{
-	    	return new SelectStatement(tableName, whereClause);
+	    private Selectable getInstance(StatementArguments arguments) throws Exception{
+	    	Selectable selectable = new SelectStatement(arguments);
+	    	return selectable;
 	    }
 	    /**
 	     * get field values to where clause
