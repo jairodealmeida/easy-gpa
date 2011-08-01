@@ -8,24 +8,47 @@ import br.com.slv.database.dao.statement.transacts.Selectable;
  */
 public class SelectStatement implements Selectable{
 	
-	private String tableName;
-	private String whereClause;
+	private StatementArguments arguments;
 	
-	public SelectStatement(String tableName, String whereClause){
-        this.tableName = tableName;
-        this.whereClause = whereClause;
+	public SelectStatement(StatementArguments arguments){
+        this.arguments = arguments;
     }
+
 	//TODO creating a create statements to select
 	public StringBuilder createStatement() {
-		if(tableName!=null && whereClause!=null){
+		if(arguments!=null ){
 			StringBuilder result = new StringBuilder();
-			result.append("SELECT * FROM ");
-			result.append(tableName);
-			result.append(" WHERE ");
-			result.append(whereClause);
+			result.append("SELECT ");
+			if(arguments.getMaxField()!=null){
+				result.append("MAX(").append(arguments.getMaxField()).append(") ");	
+			}else{
+				if(arguments.getCollumns()!=null && 
+				   arguments.getCollumns().length>0	){
+					
+				
+						for (int i=0 ; i < arguments.getCollumns().length; i++) {
+							String collumnName = arguments.getCollumns()[i];
+							result.append(collumnName);
+							if(i<=arguments.getCollumns().length-1){
+								result.append(",");
+							}
+						}
+					
+				}else{
+					result.append("* ");
+				}
+			}
+			result.append("FROM ");
+			result.append(arguments.getTableName());
+			if(arguments.getWhereClause()!=null){
+				result.append(" WHERE ");
+				result.append(arguments.getWhereClause());	
+			}
 			return result;
 		}else{
-			throw new NullPointerException("where not found");
+			throw new NullPointerException("table name is null");
 		}
 	}
+
+
 }
