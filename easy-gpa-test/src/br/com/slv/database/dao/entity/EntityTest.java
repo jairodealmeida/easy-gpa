@@ -24,7 +24,9 @@ public class EntityTest {
 	
 	@Test
 	public void update(){
-		Entity e = new Usuario(3, "test", "test", "test", 1);
+		TransferObject to = delegate.selectMax("TB_USUARIO", "id");
+		Integer maxId = to.getInteger("max");
+		Entity e = new Usuario(maxId, "test", "test", "test", 1);
 		String result = delegate.update(e);
 		assertNotNull(result);
 		assertEquals("success", result);
@@ -32,7 +34,9 @@ public class EntityTest {
 	
 	@Test
 	public void delete(){
-		Entity e = new Usuario(6, "test", "test", "test", 1);
+		TransferObject to = delegate.selectMax("TB_USUARIO", "id");
+		Integer maxId = to.getInteger("max");
+		Entity e = new Usuario( maxId, "test", "test", "test", 1);
 		String result = delegate.delete(e);
 		assertNotNull(result);
 		assertEquals("success", result);
