@@ -41,7 +41,29 @@ public class FileUtil {
 	       }
 	       
 	  }
-	
+	  public void recursiveMerge(File file, 
+			  					 StringBuilder text, 
+			  					 String encoding, 
+			  					 String extension) throws IOException{
+	       File[] files = file.listFiles();
+	       for (File file_item : files) {
+	           if(file_item.isDirectory()){
+	        	   recursiveMerge(file_item, text,encoding, extension);
+	           }else{
+	        	   String ex = extension(file_item, ".");
+	        	   if(ex.equalsIgnoreCase(extension)){
+	        		   StringBuilder readedFile = read(file_item, encoding);
+	        		   text.append( readedFile );
+	        	   }
+	           }
+	       }
+	       
+	  }
+	  public String extension(File file, String extensionSeparator) {
+		  	String fullPath = file.getPath();
+		    int dot = fullPath.lastIndexOf(extensionSeparator);
+		    return fullPath.substring(dot + 1);
+	  }
 	  public boolean listFilesByPath(String path_name){
 	        if(path_name==null)
 	            return false;
