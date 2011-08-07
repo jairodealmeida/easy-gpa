@@ -33,4 +33,8 @@ public class CommandListFiles extends Command{
            }
        }
    }
+@Override
+public void printHelp() {
+	log.info("-d to print recursive path files : example -d <path_name> : directory name");
+}
 }

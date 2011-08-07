@@ -40,7 +40,8 @@ public class MainTest {
         commands.add("-d C:\\ftp".split(" "));
         commands.add("-d null".split(" "));
         commands.add("C:\\ftp".split(" "));
-        commands.add("-m C:\\Temp txt".split(" "));
+        commands.add("-m C:\\temp .txt".split(" "));
+        commands.add("-m C:\\temp .txt ISO-8859-1".split(" "));
     }
 
     @AfterClass

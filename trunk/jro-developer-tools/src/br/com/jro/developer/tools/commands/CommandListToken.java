@@ -48,4 +48,9 @@ public class CommandListToken extends Command{
 		    	new NullPointerException("invalid parameterss");
 		    }
 	}
+	@Override
+	public void printHelp() {
+		log.info("-t to print recursive path files : example -t <path_name> <token>");
+		
+	}
 }
