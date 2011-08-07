@@ -20,15 +20,15 @@ import br.com.jro.developer.tools.commands.CommandHelp;
 	   public static final String[][] CMD_ARRAY = new String[][]{
 	    new String[]{"-h","br.com.jro.developer.tools.commands.CommandHelp"},
 	    new String[]{"-d","br.com.jro.developer.tools.commands.CommandListFiles"},
-	    new String[]{"-d","br.com.jro.developer.tools.commands.CommandListToken"},
-	    new String[]{"-m","br.com.jro.developer.tools.commands.CommandMerge"}
+	    new String[]{"-t","br.com.jro.developer.tools.commands.CommandListToken"},
+	    new String[]{"-m","br.com.jro.developer.tools.commands.CommandMerge"},
+	    new String[]{"-wkt", "br.com.jro.developer.tools.commands.CommandShapefile"}
 	   };
 	 
 	   public boolean execute(String[] args) throws Exception{
            	String[] cmd_array_item = null;
-            
-            if(args==null || args.length<=0)
-            	return false;
+           	if(args==null || args.length==0)
+           		return false;
             String token = args[0];
             cmd_array_item = tokenValidate(token);
             if(!token.equalsIgnoreCase("") && cmd_array_item==null ){
