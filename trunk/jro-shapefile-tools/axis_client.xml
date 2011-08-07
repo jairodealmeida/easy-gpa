@@ -1,0 +1,61 @@
+<project name="Main" basedir="." default="main">
+
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="bin"/>
+    <property name="jar.dir"     value="release"/>
+    <property name="main-class"  value="br.com.jro.developer.tools.Main"/>
+    <property name="lib.dir"     value="lib"/>
+	
+    <path id="classpath">
+     <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+	
+	<target name="init">
+		<echo message="Iniciando ant script." />   
+	</target>
+	
+    <target name="clean">
+        <delete file="${jar.dir}/jro-shapefile-tools.jar" />
+    	<delete file="${jar.dir}/jro-shapefile-tools.zip" />
+    	<echo message="Limpando executavel anterior." />   
+    </target>
+	
+    <target name="run" depends="jar">
+        <java fork="true" classname="${main-class}">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${jar.dir}/jro-shapefile-tools.jar"/>
+            </classpath>
+        </java>
+    	<echo message="Compilando novo pacote de classes." />
+    </target>
+	
+    <target name="compile">
+    	<mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    	<echo message="Compilando novo pacote de classes." />
+    </target>
+ 
+        	
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/jro-shapefile-tools.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            	<attribute name="Class-Path"  value="log4j-1.2.15.jar"/>
+            </manifest>
+        </jar>
+    </target>
+	
+	<target name="zip">
+		<zip destfile="${jar.dir}/jro-shapefile-tools.zip"
+	    basedir="${jar.dir}"
+	    includes="**/*.jar"
+	    excludes="**/log"/>
+	</target>
+	
+    <target name="main" depends="init,clean,run,zip">
+    	<echo message="Ant script finalizado." />
+    </target>
+	
+</project>
