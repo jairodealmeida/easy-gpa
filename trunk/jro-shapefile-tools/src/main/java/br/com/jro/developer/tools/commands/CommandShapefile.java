@@ -2,10 +2,13 @@ package br.com.jro.developer.tools.commands;
 
 import java.net.URL;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import br.com.jro.developer.tools.shapefile.ShapeFile;
 
 public class CommandShapefile extends Command{
-	
+	private static Logger log = Logger.getLogger(CommandShapefile.class);
 	public static final String COMMAND_LISTWKTS = "-wkt";
 	
 	@Override
@@ -25,10 +28,17 @@ public class CommandShapefile extends Command{
         	URL url = new URL(pathName);
     		ShapeFile util = new ShapeFile(url);
     		List<String> wkts = util.getWktList();
-    		System.out.println( wkts.toString() );
+    		for(int i=0; i<wkts.size();i++){
+    			log.info( wkts.toString() + "\n");
+    		}
         }else{
-        	System.out.println("Is necessary set shapefile file name - " +
+        	log.info("Is necessary set shapefile file name - " +
         					   "example file:/c:/temp.test.shp");
         }
+	}
+	@Override
+	public void printHelp() {
+		log.info("-wkt <file_path> : to export shapefile to wkt");
+		
 	}
 }

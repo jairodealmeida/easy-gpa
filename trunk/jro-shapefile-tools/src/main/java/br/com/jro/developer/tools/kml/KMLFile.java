@@ -56,7 +56,6 @@ public class KMLFile {
 			this.filename = url;
 		}
 		public void write(Iterator<Feature> features){
-//			KMLWriter
 			//Encoder encoder = new Encoder(new KMLConfiguration());
 			//encoder.setIndenting(true);
 
