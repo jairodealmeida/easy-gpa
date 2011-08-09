@@ -8,7 +8,6 @@ package br.com.jro.developer.tools;
 import org.apache.log4j.Logger;
 
 import br.com.jro.developer.tools.commands.Command;
-import br.com.jro.developer.tools.commands.CommandHelp;
 
 /**
  *
