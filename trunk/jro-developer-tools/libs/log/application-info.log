@@ -1,0 +1,86 @@
+[2011-08-06 19:18:02,127] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:21) - command ..: []
+[2011-08-06 19:18:02,127] INFO     0[main] - br.com.jro.developer.tools.ToolFiles.printHelp(ToolFiles.java:31) - TOOLS TO FACILITY A DEVELOPER STEPS.
+[2011-08-06 19:18:02,127] INFO     0[main] - br.com.jro.developer.tools.ToolFiles.printHelp(ToolFiles.java:33) - author ...: Jairo de Almeida. since 12 abril 2010. version 1.1
+||.........## --.#.......|
+||.........   #  # ......|
+||.........     *  ......|
+||........     -^........|
+||.....##\        .......|
+||....#####     /###.....|
+||....########\ \((#.....|
+||..####,   ))/ ##.......|
+||..#####      '####.....|
+||..#####\____/#####.....|
+||...######..######......|
+||.....""""  """"........|
+
+[2011-08-06 19:18:02,142] INFO    15[main] - br.com.jro.developer.tools.ToolFiles.printHelp(ToolFiles.java:46) - COMANDS ...
+[2011-08-06 19:18:02,142] INFO    15[main] - br.com.jro.developer.tools.ToolFiles.printHelp(ToolFiles.java:47) - -d to print recursive files example : -d <path_name>
+[2011-08-06 19:18:02,142] INFO    15[main] - br.com.jro.developer.tools.ToolFiles.printHelp(ToolFiles.java:48) - -h to read help
+[2011-08-06 19:18:19,100] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:21) - command ..: [-d]
+[2011-08-06 19:18:41,018] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:21) - command ..: [-d, C:\temp]
+[2011-08-06 19:20:17,700] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:21) - command ..: [-d, C:\temp]
+[2011-08-06 19:20:17,700] INFO     0[main] - br.com.jro.developer.tools.ToolFiles.searchFiles(ToolFiles.java:57) - C:\temp\teste2.txt
+[2011-08-06 19:20:17,700] INFO     0[main] - br.com.jro.developer.tools.ToolFiles.searchFiles(ToolFiles.java:57) - C:\temp\texto1.txt
+[2011-08-06 19:20:31,240] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:21) - command ..: [-m, C:\temp]
+[2011-08-06 19:20:31,256] INFO    16[main] - br.com.jro.developer.tools.PromptCommand.execute(PromptCommand.java:50) - Parameter <-m> not found.
+[2011-08-06 19:23:09,518] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: [-m, C:\temp]
+[2011-08-06 19:23:09,581] INFO    63[main] - br.com.jro.developer.tools.commands.CommandMerge.execute(CommandMerge.java:23) - vvvvvv
+vvv
+vv
+vv
+vv
+testes
+
+testes
+
+[2011-08-06 20:15:17,901] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: [-m, C:\temp]
+[2011-08-06 20:15:17,917]ERROR    16[main] - br.com.jro.developer.tools.Main.main(Main.java:19) - 2
+java.lang.ArrayIndexOutOfBoundsException: 2
+	at br.com.jro.developer.tools.commands.CommandMerge.execute(CommandMerge.java:16)
+	at br.com.jro.developer.tools.PromptCommand.command(PromptCommand.java:69)
+	at br.com.jro.developer.tools.PromptCommand.execute(PromptCommand.java:37)
+	at br.com.jro.developer.tools.Main.main(Main.java:17)
+[2011-08-06 21:46:09,085] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: [-m, C:\temp, .txt]
+[2011-08-06 21:46:09,116] INFO    31[main] - br.com.jro.developer.tools.commands.CommandMerge.execute(CommandMerge.java:30) - vvvvvv
+vvv
+vv
+vv
+vv
+testes
+
+testes
+
+[2011-08-06 21:46:13,141] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: [-m, C:\temp, .java]
+[2011-08-06 21:46:13,141] INFO     0[main] - br.com.jro.developer.tools.commands.CommandMerge.execute(CommandMerge.java:30) - 
+[2011-08-06 21:46:21,502] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: [-m, C:\temp, .txt]
+[2011-08-06 21:46:21,518] INFO    16[main] - br.com.jro.developer.tools.commands.CommandMerge.execute(CommandMerge.java:30) - vvvvvv
+vvv
+vv
+vv
+vv
+testes
+
+testes
+
+[2011-08-06 22:16:06,644] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: []
+[2011-08-06 22:16:13,289] INFO     0[main] - br.com.jro.developer.tools.Main.printArgs(Main.java:25) - command ..: [-h]
+[2011-08-06 22:16:13,305] INFO    16[main] - br.com.jro.developer.tools.commands.CommandHelp.printHelp(CommandHelp.java:18) - TOOLS TO FACILITY A DEVELOPER STEPS.
+[2011-08-06 22:16:13,305] INFO    16[main] - br.com.jro.developer.tools.commands.CommandHelp.printHelp(CommandHelp.java:20) - author ...: Jairo de Almeida. since 12 abril 2010. version 1.1
+||.........## --.#.......|
+||.........   #  # ......|
+||.........     *  ......|
+||........     -^........|
+||.....##\        .......|
+||....#####     /###.....|
+||....########\ \((#.....|
+||..####,   ))/ ##.......|
+||..#####      '####.....|
+||..#####\____/#####.....|
+||...######..######......|
+||.....""""  """"........|
+
+[2011-08-06 22:16:13,305] INFO    16[main] - br.com.jro.developer.tools.commands.CommandHelp.printHelp(CommandHelp.java:33) - COMANDS ...
+[2011-08-06 22:16:13,305] INFO    16[main] - br.com.jro.developer.tools.commands.CommandHelp.printHelp(CommandHelp.java:34) - -d to print recursive path files : example -d <path_name> : directory name
+[2011-08-06 22:16:13,305] INFO    16[main] - br.com.jro.developer.tools.commands.CommandHelp.printHelp(CommandHelp.java:35) - -h to read help
+[2011-08-06 22:16:13,305] INFO    16[main] - br.com.jro.developer.tools.commands.CommandHelp.printHelp(CommandHelp.java:36) - -m to read a recursive txt files into directory (will merge) : example -m : merge text files in log file<path_name> : directory name<extension> : extension of files will merge - example .txt, .sql, .java, etc<encoding> : for example: encoding are ISO-8859-1 to portuguese, UTF-8 to english, etc)
