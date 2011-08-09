@@ -2,8 +2,14 @@ package br.com.jro.developer.tools.commands;
 
 import org.apache.log4j.Logger;
 
+<<<<<<< .mine
 import br.com.jro.developer.tools.PromptCommand;
 
+
+=======
+import br.com.jro.developer.tools.PromptCommand;
+
+>>>>>>> .r76
 public class CommandHelp extends Command{
 	private static Logger log = Logger.getLogger(CommandHelp.class);
 
