@@ -27,7 +27,7 @@ public class DataTransferObject extends DatabaseDAOImpl {
  
 	static Logger log = Logger.getLogger(DataTransferObject.class);
     private Map<Integer,String> transaction = new HashMap<Integer,String>();
-    
+
     /**
      * Method to get entities from ResultSet 
      * @param tableName - database table name

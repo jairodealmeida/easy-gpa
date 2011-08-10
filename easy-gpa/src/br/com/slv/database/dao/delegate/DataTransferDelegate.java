@@ -28,13 +28,17 @@ import java.sql.SQLException;
 public class DataTransferDelegate {
 	/** class of works with database instance */
 	private DataTransferObject dao = null;
-	 @Deprecated
+
+	@Deprecated
 	private ArrayList<FieldTO> primaryKeyTos;
 	 @Deprecated
 	private ArrayList<FieldTO> fieldTos;
 	
 	static Logger log = Logger.getLogger(DataTransferDelegate.class);
 	
+	public DataTransferDelegate(){
+		dao = new DataTransferObject();
+	}
 	/**
 	 * method used to get a table name of entity
 	 * based in entity class name 
@@ -63,12 +67,6 @@ public class DataTransferDelegate {
 	private ArrayList<FieldTO> getFieldTos() {
 		return fieldTos;
 	}
-    
-	public DataTransferDelegate(){
-		dao = new DataTransferObject();
-	}
-	
-
 	
 	/**
 	 * method will use to insert objects
