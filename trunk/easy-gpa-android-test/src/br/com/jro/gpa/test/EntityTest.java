@@ -1,48 +1,18 @@
 package br.com.jro.gpa.test;
 
+import java.util.ArrayList;
+import java.util.List;
 import android.test.ActivityInstrumentationTestCase2;
 import br.com.jro.gpa.MainActivity;
 import br.com.slv.database.Repositorio;
 import br.com.slv.database.dao.entity.Entity;
+import br.com.slv.database.dao.model.TransferObject;
 
 public class EntityTest extends
 ActivityInstrumentationTestCase2<MainActivity>{
 	
 	private MainActivity mActivity;
-	//DataTransferDelegate delegate = new DataTransferDelegate();
-	
-/*
-	public void testInsert(){
-		Entity e = new Usuario(3,"test","test","test", 1);
-		String result = delegate.insert(e);
-		assertNotNull(result);
-		assertEquals("success", result);
-	}
-	
 
-	public void testupdate(){
-		TransferObject to = delegate.selectMax("TB_USUARIO", "id");
-		Integer maxId = to.getInteger("max");
-		Entity e = new Usuario(maxId, "test", "test", "test", 1);
-		String result = delegate.update(e);
-		assertNotNull(result);
-		assertEquals("success", result);
-	}
-	
-
-	public void testdelete(){
-		TransferObject to = delegate.selectMax("TB_USUARIO", "id");
-		Integer maxId = to.getInteger("max");
-		Entity e = new Usuario( maxId, "test", "test", "test", 1);
-		String result = delegate.delete(e);
-		assertNotNull(result);
-		assertEquals("success", result);
-	}
-
-	public void testselect(){
-		ArrayList<TransferObject> list = delegate.select("TB_USUARIO", "nome_completo = 'test'");
-		assertNotNull(list);
-	}*/
 	public EntityTest() {
 		super("br.com.jro.gpa", MainActivity.class);
 		// TODO Auto-generated constructor stub
@@ -87,18 +57,64 @@ ActivityInstrumentationTestCase2<MainActivity>{
 			e.printStackTrace();
 		}
 	}
-	public void testInsert(){
+	public void testInsertAccept1(){
 		try {
-			Entity e = new Usuario(3,"test","test","test", 1);
+			Entity entity = new Usuario(3,"test","test","test", 1);
 			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
-			//String result = delegate.insert(e);
-			//assertNotNull(result);
-			//assertEquals("success", result);
+			long result = repository.insert(entity);
+			assertTrue(result>0);
 		} catch (Exception e) {
 			fail("not pass here " + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
 
 	}
+	
+	public void testUpdateAccept1(){
+		try {
+			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			TransferObject to = repository.selectMax("TB_USUARIO", "id");
+			Integer maxId = to.getInteger("max");
+			Entity e = new Usuario(maxId, "test", "test", "test", 1);
+			long result = repository.update(e);
+			assertNotNull(result);
+			assertEquals(1, result);
+		} catch (Exception e) {
+			fail("not pass here " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void testDeleteAccept1(){
+		try {
+			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			TransferObject to = repository.selectMax("TB_USUARIO", "id");
+			Integer maxId = to.getInteger("max");
+			Entity e = new Usuario( maxId, "test", "test", "test", 1);
+			long result = repository.delete(e);
+			assertNotNull(result);
+			assertEquals(1, result);
+		} catch (Exception e) {
+			fail("not pass here " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void testSelectAccept1(){
+		try {
+			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			List<TransferObject> list = repository.select("TB_USUARIO", "nome_completo = 'test'");
+			assertNotNull(list);
+			assertTrue(list.size()>0);
+		} catch (Exception e) {
+			fail("not pass here " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	
 	
 }
