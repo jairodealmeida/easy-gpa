@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 
 public class FieldTO implements Serializable{
+	
     private String name;
     private Object value;
     private int fieldType;
