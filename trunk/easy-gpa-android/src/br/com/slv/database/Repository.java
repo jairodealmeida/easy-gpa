@@ -337,7 +337,10 @@ public class Repository  {
 	            null);  
 	        c.moveToFirst();  
 	        if(!c.isAfterLast()){  
-	        	TransferObject bean = this.fill(c);
+	        	String value = c.getString( 0 );
+	        	ArrayList<FieldTO> fieldsResult = new ArrayList<FieldTO>();
+	        	fieldsResult.add(new FieldTO("max", value));
+	        	TransferObject bean = new TransferObject(tableName, fieldsResult, TransferObject.READ_TYPE);
 	            return bean; 
 	        }      
 		} catch (Exception e) {

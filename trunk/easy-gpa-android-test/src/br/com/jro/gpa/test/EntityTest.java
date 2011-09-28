@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.test.ActivityInstrumentationTestCase2;
 import br.com.jro.gpa.MainActivity;
-import br.com.slv.database.Repositorio;
+import br.com.slv.database.Repository;
 import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.model.TransferObject;
 
@@ -32,7 +32,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	public void testCreateScriptAccept1(){
 		try {
 			Entity e = new Usuario(3,"test","test","test", 1);
-			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
 			String result = repository.createScript();
 			assertNotNull(result);
 			assertEquals("create table tb_usuario" +
@@ -48,7 +48,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	public void testDeleteScriptAccept1(){
 		try {
 			Entity e = new Usuario(3,"test","test","test", 1);
-			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
 			String result = repository.deleteScript();
 			assertNotNull(result);
 			assertEquals("drop table if exists tb_usuario;", result);			
@@ -60,7 +60,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	public void testInsertAccept1(){
 		try {
 			Entity entity = new Usuario(3,"test","test","test", 1);
-			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
 			long result = repository.insert(entity);
 			assertTrue(result>0);
 		} catch (Exception e) {
@@ -72,7 +72,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	
 	public void testUpdateAccept1(){
 		try {
-			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
 			TransferObject to = repository.selectMax("TB_USUARIO", "id");
 			Integer maxId = to.getInteger("max");
 			Entity e = new Usuario(maxId, "test", "test", "test", 1);
@@ -88,7 +88,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	
 	public void testDeleteAccept1(){
 		try {
-			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
 			TransferObject to = repository.selectMax("TB_USUARIO", "id");
 			Integer maxId = to.getInteger("max");
 			Entity e = new Usuario( maxId, "test", "test", "test", 1);
@@ -104,7 +104,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	
 	public void testSelectAccept1(){
 		try {
-			Repositorio repository = new Repositorio(mActivity, Usuario.class,"teste",1);
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
 			List<TransferObject> list = repository.select("TB_USUARIO", "nome_completo = 'test'");
 			assertNotNull(list);
 			assertTrue(list.size()>0);
