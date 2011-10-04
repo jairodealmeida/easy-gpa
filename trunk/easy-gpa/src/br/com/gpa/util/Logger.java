@@ -1,6 +1,6 @@
 package br.com.gpa.util;
 
-public class Logger {
+public class Logger { 
 	public static Logger getLogger(Class artefact){
 		if(artefact!=null){
 			System.out.println("logging to " + artefact.getName());
