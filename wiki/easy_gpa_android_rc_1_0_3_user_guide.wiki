@@ -2,24 +2,24 @@
 =Easy-GPA-Android=
 =CRUD API(Create, read, update and delete)=
 =Google Persistence API=
-*IRC* #easy-gpa 
-*Group* http://groups.google.com/group/easy-gpa
+*IRC* #easy-gpa-android 
+*Group* http://groups.google.com/group/easy-gpa-android
  
-*Easy-gpa-android user guide*
-*How to use? *
-First of all, 
-Create a new android project in eclipse and put on classpath the easy-gpa-android.jar<br>
-Set the easy-gpa-android.jar to work with sqlite database’s. 
-To set the database instance to your project using easy-gpa-android.
-In easy-gpa-android.jar library has a class named Entity 
-which you can make your regular beans extends in order to use easy-gpa functionalities.
-Create a regular class with a suggestive name representing a database table, 
-make it extends Entity class (from easy-gpa.jar) and annotate it with {{{@GPAEntity(name="table_name")}}} annonation. 
-After that, you have to annotate your class attributes’ getters and setters according to your database table’s fields. 
-The first thing to consider is the primary key. 
-Make sure to annotate the table’s id with {{{@GPAPrimaryKey(name="id_name", ignore=true)}}} annotation. 
-The other regular fields must be annotated with {{{@GPAField(name="field_name")}}} annotation.
-Example: The following example was made using this sqlite script: 
+*Easy-gpa-android user guide* <br>
+*How to use? * <br>
+First of all, <br>
+Create a new android project in eclipse and put on classpath the easy-gpa-android.jar <br>
+Set the easy-gpa-android.jar to work with sqlite database’s. <br>
+To set the database instance to your project using easy-gpa-android.<br>
+In easy-gpa-android.jar library has a class named Entity <br>
+which you can make your regular beans extends in order to use easy-gpa functionalities.<br>
+Create a regular class with a suggestive name representing a database table, <br>
+make it extends Entity class (from easy-gpa.jar) and annotate it with {{{@GPAEntity(name="table_name")}}} annonation. <br>
+After that, you have to annotate your class attributes’ getters and setters according to your database table’s fields. <br>
+The first thing to consider is the primary key. <br>
+Make sure to annotate the table’s id with {{{@GPAPrimaryKey(name="id_name", ignore=true)}}} annotation. <br>
+The other regular fields must be annotated with {{{@GPAField(name="field_name")}}} annotation.<br>
+Example: The following example was made using this sqlite script: <br>
 {{{
 CREATE TABLE [tb_usuario] (
   [id] integer primary key autoincrement NOT NULL, 
@@ -27,8 +27,8 @@ CREATE TABLE [tb_usuario] (
   [nome_usuario] VARCHAR NOT NULL, 
   [senha] VARCHAR NOT NULL);
 }}}
-After this, a class with the table characterizes was created, extending Entity class to use it’s methods.
-The following example shows how the class Usuario (user) implements the easy-gpa-android functionalities.:
+After this, a class with the table characterizes was created, extending Entity class to use it’s methods.<br>
+The following example shows how the class Usuario (user) implements the easy-gpa-android functionalities.:<br>
 
 {{{
 
@@ -223,9 +223,11 @@ ActivityInstrumentationTestCase2<MainActivity>{
 	}	
 }
 }}}
-By doing these tests, you will be creating an Entity instance to transact information from/to the configured database, using a regular DBMS operations (insert update and delete).
-This is an easy, simple and elegant form to manipulate/transact statements. No more hard DAO implementations. 
+By doing these tests, you will be creating an Entity instance to transact information from/to the configured database, <br>
+using a regular DBMS operations (insert update and delete).<br>
+This is an easy, simple and elegant form to manipulate/transact statements. No more hard DAO implementations. <br>
 
-*Authors:*
-*Jairo de Almeida Since: v2 - 02/08/2011 *
-*Willian da Costa Chimura : v3 - 06/09/2011*
+*Authors:* <br>
+*Jairo de Almeida Since: v2 - 02/08/2011 * <br>
+*Willian da Costa Chimura : v3 - 06/09/2011* <br>
+*Jairo de Almeida Since: v4 - 17/11/2011 * <br>
