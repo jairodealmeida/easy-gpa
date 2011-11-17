@@ -2,13 +2,13 @@
 =Easy-GPA-Android=
 =CRUD API(Create, read, update and delete)=
 =Google Persistence API=
-*IRC* #easy-gpa-android 
-*Group* http://groups.google.com/group/easy-gpa-android
+*IRC* #easy-gpa 
+*Group* http://groups.google.com/group/easy-gpa
  
 *Easy-gpa-android user guide*
 *How to use? *
 First of all, 
-Create a new android project in eclipse and put on classpath the easy-gpa-android.jar
+Create a new android project in eclipse and put on classpath the easy-gpa-android.jar<br>
 Set the easy-gpa-android.jar to work with sqlite database’s. 
 To set the database instance to your project using easy-gpa-android.
 In easy-gpa-android.jar library has a class named Entity 
