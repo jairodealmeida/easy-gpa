@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.gpa.util.Logger;
 import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.entity.annotation.GPAEntity;
 import br.com.slv.database.dao.entity.annotation.GPAField;
@@ -46,7 +48,9 @@ public class Repositorio  {
 						Class<?> entity,
 						String databaseName,
 						int version) throws Exception{
-		
+		if(db!=null){
+			db.close();
+		}
 		this.entity = entity;
         SQLiteHelper dbHelper = new SQLiteHelper(ctx,  
                 databaseName, 
@@ -284,6 +288,7 @@ public class Repositorio  {
 	 * @param whereClause - Where clause
 	 * @return List<TransferObject> select entities result from database
 	 */
+	@Deprecated
 	public List<TransferObject> select(String tableName, 
 											String whereClause){
 	    long start, end;
@@ -292,13 +297,7 @@ public class Repositorio  {
 	    Cursor c = null;
 		try {
 	        c = getDb().query(
-	        	tableName, 
-	        	null,   
-	        	null, 
-	        	null, 
-	        	null, 
-	        	null,
-	            null);  
+	        	tableName,null,null,null,null,null,null);  
 	        c.moveToFirst();  
 	        if(!c.isAfterLast()){  
 	        	TransferObject bean = this.fill(c);
@@ -311,6 +310,56 @@ public class Repositorio  {
 			   if(c!=null){c.close();}
 	           end = (new java.util.Date()).getTime();
 	           Log.i("GPALOG", "Time to query: " + (end - start) + " ms");
+		}
+		return null;
+	}
+	public List<TransferObject> selectAll(Class<?> entity){
+		long start, end;
+		start = (new java.util.Date()).getTime(); 
+		List<TransferObject> items = new ArrayList<TransferObject>();
+		Cursor c = null;
+		try {
+			String tableName = this.getTableName();
+			c = getDb().query(
+				tableName, null, null, null, null, null, null);  
+				c.moveToFirst();  
+				if(!c.isAfterLast()){  
+					TransferObject bean = this.fill(c);
+					items.add( bean ); 
+				} 
+			return items;
+		} catch (Exception e) {
+			Log.e("GPALOG" , e.getMessage()); 
+		}finally{
+			if(c!=null){c.close();}
+			end = (new java.util.Date()).getTime();
+			Log.i("GPALOG", "Time to query: " + (end - start) + " ms");
+		}
+		return null;
+	}
+	@Deprecated
+	public List<TransferObject> select(Class<?> entity, 
+			String whereClause){
+			long start, end;
+			start = (new java.util.Date()).getTime(); 
+			List<TransferObject> items = new ArrayList<TransferObject>();
+			Cursor c = null;
+			try {
+				String tableName = this.getTableName();
+				c = getDb().query(
+					tableName,null,null,null,null,null,null);  
+					c.moveToFirst();  
+					if(!c.isAfterLast()){  
+					TransferObject bean = this.fill(c);
+					items.add( bean ); 
+			} 
+			return items;
+		} catch (Exception e) {
+			Log.e("GPALOG" , e.getMessage()); 
+		}finally{
+			if(c!=null){c.close();}
+			end = (new java.util.Date()).getTime();
+			Log.i("GPALOG", "Time to query: " + (end - start) + " ms");
 		}
 		return null;
 	}
@@ -329,8 +378,8 @@ public class Repositorio  {
 		try {
 	        c = getDb().query(
 	        	tableName, 
-	        	null,   
-	        	"max( " + maxField + " )", 
+	        	new String[]{"max( " + maxField + " )"},   
+	        	null, 
 	        	null, 
 	        	null, 
 	        	null,
@@ -403,33 +452,57 @@ public class Repositorio  {
         } 
     }
 	private TransferObject fill(Cursor c){
-		List<FieldTO> fields = new ArrayList<FieldTO>();
-		
-	    for (FieldTO fieldTO : fieldTos) {
-	    	String name = fieldTO.getName();
-	    	Object value = fieldTO.getValue();
-	    	if(value !=null){
-	    		if(value instanceof String)		{fields.add( new FieldTO(name, (String) value ));}
-		    	if(value instanceof Integer)	{fields.add( new FieldTO(name, (Integer) value));}
-		    	if(value instanceof Long)		{fields.add( new FieldTO(name, (Long) value));} 
-		    	if(value instanceof BigDecimal) {fields.add( new FieldTO(name, (Long) value));}
-		    	if(value instanceof Double) 	{fields.add( new FieldTO(name, (Double) value));}
-		    	if(value instanceof Float)		{fields.add( new FieldTO(name, (Float) value));}
-		    	if(value instanceof byte[])		{fields.add( new FieldTO(name, (byte[]) value ));} 
-		    	if(value instanceof Short)		{fields.add( new FieldTO(name, (Short) value));}
-	    	}
+		try {
+			List<FieldTO> result = new ArrayList<FieldTO>();
+			//List<FieldTO> fields =  fields.getFields();
+			Field[] fields = entity.getDeclaredFields();	
+		    for (Field field : fields) {
+		    	field.setAccessible(true);
+				Annotation annoField = field.getAnnotation(GPAField.class);
+				Annotation annoFieldPK = field.getAnnotation(GPAPrimaryKey.class);
+				if(annoFieldPK!=null && annoFieldPK instanceof GPAPrimaryKey){
+					GPAPrimaryKey pk = (GPAPrimaryKey)annoFieldPK;
+					String name = pk.name();
+					result.add( new FieldTO(name, c.getLong( c.getColumnIndexOrThrow(name) ) ));
+					continue;
+				}
+				if(annoField!=null && annoField instanceof GPAField){
+					GPAField anno = (GPAField)annoField;
+					String name = anno.name();
+					Object type = field.getType();
+		    		if(type instanceof String)	{result.add( new FieldTO(name, c.getString( c.getColumnIndexOrThrow(name) ) ));}
+			    	if(type instanceof Integer)	{result.add( new FieldTO(name, c.getInt( c.getColumnIndexOrThrow(name) )));}
+			    	if(type instanceof Long)	{result.add( new FieldTO(name, c.getLong( c.getColumnIndexOrThrow(name) )));} 
+			    	if(type instanceof BigDecimal) {result.add( new FieldTO(name, c.getLong( c.getColumnIndexOrThrow(name) )));}
+			    	if(type instanceof Double) 	{result.add( new FieldTO(name, c.getDouble( c.getColumnIndexOrThrow(name) )));}
+			    	if(type instanceof Float)	{result.add( new FieldTO(name, c.getFloat( c.getColumnIndexOrThrow(name) )));}
+			    	if(type instanceof byte[])	{result.add( new FieldTO(name, c.getBlob( c.getColumnIndexOrThrow(name) ) ));} 
+			    	if(type instanceof Short)	{result.add( new FieldTO(name, c.getShort( c.getColumnIndexOrThrow(name) )));}
+					continue;
+				}
+		    	//Object value = field.get(field);
+		    	//Object type = field.getType();
+				/*
+		    	if(value !=null){
+		    		if(type instanceof String)	{result.add( new FieldTO(name, (String) value ));}
+			    	if(type instanceof Integer)	{result.add( new FieldTO(name, (Integer) value));}
+			    	if(type instanceof Long)	{result.add( new FieldTO(name, (Long) value));} 
+			    	if(type instanceof BigDecimal) {result.add( new FieldTO(name, (Long) value));}
+			    	if(type instanceof Double) 	{result.add( new FieldTO(name, (Double) value));}
+			    	if(type instanceof Float)	{result.add( new FieldTO(name, (Float) value));}
+			    	if(type instanceof byte[])	{result.add( new FieldTO(name, (byte[]) value ));} 
+			    	if(type instanceof Short)	{result.add( new FieldTO(name, (Short) value));}
+		    	}*/
+			}
+			TransferObject to = new TransferObject(
+					getTableName(),
+					fieldTos,
+					TransferObject.READ_TYPE);
+			return to;
+		} catch (Exception e) {
+			Logger.error(e);
 		}
-		
-		for(int i=0; i< c.getColumnCount(); i++){
-			fields.add(new FieldTO(c.getColumnName(i),c.getBlob(i)));
-		}
-		
-		
-		TransferObject to = new TransferObject(
-				getTableName(),
-				fieldTos,
-				TransferObject.READ_TYPE);
-		return to;
+		return null;
 	}
 
 }
