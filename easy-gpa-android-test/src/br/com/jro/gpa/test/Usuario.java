@@ -7,16 +7,17 @@ import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 
 @GPAEntity(name="tb_usuario")
 public class Usuario extends Entity{
-	@GPAPrimaryKey(name="id", ignore=true)
-	private int id;
-	@GPAField(name="nome_completo")
+	
+	@GPAPrimaryKey(name="id", ignore=true, type=Entity.INTEGER)
+	private Integer id;
+	@GPAField(name="nome_completo", type=Entity.VARCHAR)
 	private String nomeCompleto;
-	@GPAField(name="nome_usuario")
+	@GPAField(name="nome_usuario", type=Entity.VARCHAR)
 	private String nomeUsuario;
-	@GPAField(name="senha")
+	@GPAField(name="senha", type=Entity.VARCHAR)
 	private String senha;
-	@GPAField(name="id_device")
-	private int idDevice;
+	@GPAField(name="id_device", type=Entity.INTEGER)
+	private Integer idDevice;
 	/**
 	 * Used by insert without id, database are responsible 
 	 * to generate a sequential id to primary key 
@@ -28,6 +29,7 @@ public class Usuario extends Entity{
 	public Usuario(String nomeCompleto, String nomeUsuario,
 			String senhaCharacter, int idDevice) {
 		super();
+		
 		this.nomeCompleto = nomeCompleto;
 		this.nomeUsuario = nomeUsuario;
 		this.senha = senhaCharacter;
@@ -50,10 +52,10 @@ public class Usuario extends Entity{
 		this.senha = senhaCharacter;
 		this.idDevice = idDevice;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getNomeCompleto() {
@@ -74,10 +76,10 @@ public class Usuario extends Entity{
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public int getIdDevice() {
+	public Integer getIdDevice() {
 		return idDevice;
 	}
-	public void setIdDevice(int idDevice) {
+	public void setIdDevice(Integer idDevice) {
 		this.idDevice = idDevice;
 	}
 
