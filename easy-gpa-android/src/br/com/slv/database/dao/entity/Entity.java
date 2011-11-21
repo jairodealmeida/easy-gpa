@@ -13,6 +13,10 @@ import br.com.slv.database.dao.model.FieldTO;
 
 public abstract class Entity implements Serializable{
 	
+	public static final int VARCHAR = 1;
+	public static final int INTEGER = 2;
+	public static final int LONG = 3;
+	
 	public String getXML(){
 		try {
 			StringBuilder xml = new StringBuilder();
