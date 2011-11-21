@@ -7,4 +7,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface GPAPrimaryKey{
 	String name();
 	boolean ignore();
+	int type();
 }

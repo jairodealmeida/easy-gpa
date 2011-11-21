@@ -276,7 +276,30 @@ public class Repository  {
 		}
 		return 0;
 	}
-	
+	public List<TransferObject> selectAll(Class<?> entity){
+		long start, end;
+		start = (new java.util.Date()).getTime(); 
+		List<TransferObject> items = new ArrayList<TransferObject>();
+		Cursor c = null;
+		try {
+			String tableName = this.getTableName();
+			c = getDb().query(
+				tableName, null, null, null, null, null, null);  
+				c.moveToFirst();  
+				if(!c.isAfterLast()){  
+					TransferObject bean = this.fill(c);
+					items.add( bean ); 
+				} 
+			return items;
+		} catch (Exception e) {
+			Log.e("GPALOG" , e.getMessage()); 
+		}finally{
+			if(c!=null){c.close();}
+			end = (new java.util.Date()).getTime();
+			Log.i("GPALOG", "Time to query: " + (end - start) + " ms");
+		}
+		return null;
+	}
 	/**
 	 * Method to get resultset collections from database
 	 * this methodo works with select sintax
@@ -460,16 +483,18 @@ public class Repository  {
 				if(annoFieldPK!=null && annoFieldPK instanceof GPAPrimaryKey){
 					GPAPrimaryKey pk = (GPAPrimaryKey)annoFieldPK;
 					String name = pk.name();
+					int type = pk.type();
 			    	//if(!c.isNull(i)){
-			    		fieldsResult.add( getFieldAt(c, name, reflectionField, i) );
+			    		fieldsResult.add( getFieldAt(c, name, type, i) );
 			    	//}
 					continue;
 				}
 				if(annoField!=null && annoField instanceof GPAField){
 					GPAField field = (GPAField)annoField;
 					String name = field.name();
+					int type = field.type();
 					//if(!c.isNull(i)){
-						fieldsResult.add( getFieldAt(c, name, reflectionField, i) );
+						fieldsResult.add( getFieldAt(c, name, type, i) );
 					//}
 					continue;
 				}
@@ -481,6 +506,9 @@ public class Repository  {
 				TransferObject.READ_TYPE);
 		return to;
 	}
+	@Deprecated //TODO remove the newInstance to accept primitive types
+	//substitute to annotation type, to get more flexibility data types 
+	//use {@link getField}
 	private FieldTO getFieldAt(Cursor c, String name, Field field, int columnIndex) throws IllegalAccessException, InstantiationException{
 			Object type = field.getType().newInstance();
     		if(type instanceof String)
@@ -501,5 +529,14 @@ public class Repository  {
 	    		return new FieldTO(name, c.getShort(columnIndex));
 	    	return null;
 	}
-
+	private FieldTO getFieldAt(Cursor c, String name, int type, int columnIndex) throws IllegalAccessException, InstantiationException{
+		
+		if(type==Entity.VARCHAR)
+			return new FieldTO(name, c.getString(columnIndex));
+    	if(type==Entity.INTEGER)	
+    		return new FieldTO(name, c.getInt(columnIndex));
+    	if(type==Entity.LONG)
+    		return new FieldTO(name, c.getLong(columnIndex));
+    	return null;
+}
 }
