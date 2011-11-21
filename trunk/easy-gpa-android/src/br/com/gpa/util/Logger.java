@@ -1,29 +1,52 @@
 package br.com.gpa.util;
 
+import android.util.Log;
+
 public class Logger {
+	
+	private static Class artefact;
+	
 	public static Logger getLogger(Class artefact){
 		if(artefact!=null){
-			System.out.println("logging to " + artefact.getName());
+			Logger.artefact = artefact;
+			Log.i("Logger", "logging to " + artefact.getName());
 			return new Logger();
 		}else{
 			throw new NullPointerException("Logger artefact not found");
 		}
 	}
-	public void info(String msg){
-		System.out.println(msg);
-	}
-	public void error(String msg){
-		System.err.println(msg);
-	}
-	public void error(Exception e){
-		if(e!=null){
-			e.printStackTrace();
+	public static void info(String msg){
+		if(artefact!=null){
+			Log.i(artefact.getName(), msg);
+		}else{
+			Log.i("INFO", msg);	
 		}
 	}
-	public void error(String msg, Exception e){
-		System.err.println(msg);
+	public static void error(String msg){
+		if(artefact!=null){
+			Log.e(artefact.getName(), msg);	
+		}else{
+			Log.e("ERROR", msg);	
+		}
+	}
+	public static void error(Exception e){
 		if(e!=null){
-			e.printStackTrace();
+			if(artefact!=null){
+				Log.e(artefact.getName(), e.getLocalizedMessage(),e);
+			}else{
+				Log.e("ERROR", e.getLocalizedMessage(),e);
+			}
+		}
+	}
+	
+	public static void error(String msg, Exception e){
+		Log.e("ERROR", msg);
+		if(e!=null){
+			if(artefact!=null){
+				Log.e(artefact.getName(), e.getLocalizedMessage(),e);
+			}else{
+				Log.e("ERROR", e.getLocalizedMessage(),e);
+			}
 		}
 	}
 	
