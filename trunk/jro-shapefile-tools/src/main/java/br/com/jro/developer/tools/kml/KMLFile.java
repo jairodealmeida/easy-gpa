@@ -72,7 +72,6 @@ public class KMLFile {
 		    Reader r = new BufferedReader(new FileReader(file));
 		    LineNumberReader myReader = new LineNumberReader(r);
 		    xr.parse(new InputSource(myReader));
-		    
 		    List geoms = kmlHandler.getGeometries();
 		    printWKT(geoms);
 		}
