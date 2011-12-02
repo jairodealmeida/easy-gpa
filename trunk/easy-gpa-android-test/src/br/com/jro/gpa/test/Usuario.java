@@ -10,7 +10,7 @@ public class Usuario extends Entity{
 	
 	@GPAPrimaryKey(name="id", ignore=true, type=Entity.INTEGER)
 	private Integer id;
-	@GPAField(name="nome_completo", type=Entity.VARCHAR)
+	@GPAField(name="nome_completo", type=Entity.VARCHAR) 
 	private String nomeCompleto;
 	@GPAField(name="nome_usuario", type=Entity.VARCHAR)
 	private String nomeUsuario;
