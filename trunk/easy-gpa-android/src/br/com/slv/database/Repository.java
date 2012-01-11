@@ -12,6 +12,7 @@ import br.com.slv.database.dao.entity.annotation.GPAField;
 import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
+import br.com.slv.database.dao.statement.StatementFactory;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -230,7 +231,7 @@ public class Repository  {
 						tableName, 
 						fieldTos, 
 						TransferObject.INSERT_TYPE);
-			return transact(to);
+			return transactStatements(to);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -250,7 +251,7 @@ public class Repository  {
 						primaryKeyTos,
 						fieldTos, 
 						TransferObject.UPDATE_TYPE);
-			return transact(to);
+			return transactStatements(to);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -270,7 +271,26 @@ public class Repository  {
 						primaryKeyTos,
 						fieldTos, 
 						TransferObject.DELETE_TYPE);
-			return transact(to);
+			
+
+			
+			return transactStatements(to);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	public long removeAll(){
+		try {
+			//TODO
+			//this.prepareFields(entity, true);
+			String tableName = this.getTableName();
+			TransferObject to = new TransferObject(
+						tableName,
+						primaryKeyTos,
+						fieldTos, 
+						TransferObject.DELETE_TYPE);
+			return transactStatements(to);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -382,10 +402,28 @@ public class Repository  {
 	 * @return String success or fail
 	 * @throws Exception
 	 */
-	private long transact(TransferObject feature)  throws Exception {
-	    ContentValues cv = new ContentValues();  
+	private Cursor selectStatements(TransferObject feature)  throws Exception {
+	    //ContentValues cv = new ContentValues();  
 	    List<FieldTO> fields = feature.getFields();
-	    for (FieldTO fieldTO : fields) {
+	    String[] selectionArgs = new String[fields.size()];
+	    for (int i=0; i<fields.size();i++) {
+	    	FieldTO fieldTO = fields.get(i);
+	    	String name = fieldTO.getName();
+	    	Object value = fieldTO.getValue();
+	    	selectionArgs[i] = String.valueOf(value);
+
+		}
+	   // return getDb().insert(getTableName(), null, cv);
+		StatementFactory statement = new StatementFactory(feature);
+        StringBuilder sqls = statement.createStatementSQL();
+        Cursor c = getDb().rawQuery(sqls.toString(), selectionArgs);
+	    return c;
+	}
+	private long transactStatements(TransferObject feature)  throws Exception {
+		ContentValues cv = new ContentValues();  
+		List<FieldTO> fields = feature.getFields();
+	    for (int i=0; i<fields.size();i++) {
+	    	FieldTO fieldTO = fields.get(i);
 	    	String name = fieldTO.getName();
 	    	Object value = fieldTO.getValue();
 	    	if(value ==null){cv.putNull(name);}
@@ -399,10 +437,20 @@ public class Repository  {
 		    	if(value instanceof byte[])		{cv.put(name, (byte[]) value );} 
 		    	if(value instanceof Short)		{cv.put(name, (Short) value);}
 	    	}
-		}
+	    }
 	    return getDb().insert(getTableName(), null, cv);
 	}
-	
+	/*
+	private long transact2(TransferObject feature)  throws Exception {
+		switch (feature.getTransactionType()) {
+		case TransferObject.DELETE_TYPE:
+			getDb().
+		break;
+
+		default:
+			break;
+		}
+	}*/
 	/**
 	 * Method to transact objects into database
 	 * @param features - Instantiate transfer objects
@@ -415,7 +463,7 @@ public class Repository  {
         if(features!=null && features.size()>0){
         	db.beginTransaction();
         	for (TransferObject transferObject : features) {
-        		if(transact(transferObject)<=0){
+        		if(transactStatements(transferObject)<=0){
         			throw new NullPointerException("Insert error");
         		}
 			}
