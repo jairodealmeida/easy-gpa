@@ -3,11 +3,21 @@ package br.com.slv.database.dao.statement.operation;
 import br.com.slv.database.dao.model.FieldTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class WhereStatement {
- 
-        public StringBuilder createWhereStatement(ArrayList<FieldTO> primaryKeys){
+		private List<FieldTO> fields;
+		 public WhereStatement(){
+			 
+		 }
+	    public WhereStatement(List<FieldTO> fields){
+	    	this.fields = fields;
+	    }
+		public StringBuilder createWhereStatement(){
+			return createWhereStatement(fields);
+		}
+        public StringBuilder createWhereStatement(List<FieldTO> primaryKeys){
             if(primaryKeys!=null && primaryKeys.size()>0){
                 StringBuilder result = new StringBuilder();
                 result.append(" WHERE ");
@@ -30,6 +40,13 @@ public class WhereStatement {
             }else{
                 throw new NullPointerException("impossible make the where clause without primary keys");
             }
+        }
+        public String[] getArguments(){
+        	String[] values = new String[fields.size()];
+        	for (int i = 0; i < values.length; i++) {
+				values[i] = String.valueOf( fields.get(i).getValue() );
+			}
+        	return values;
         }
         
 }
