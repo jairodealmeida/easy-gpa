@@ -1,12 +1,15 @@
 package br.com.jro.gpa.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.test.ActivityInstrumentationTestCase2;
 import br.com.jro.gpa.MainActivity;
 import br.com.slv.database.Repository;
 import br.com.slv.database.Repository;
 import br.com.slv.database.dao.entity.Entity;
+import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
+import br.com.slv.database.dao.statement.operation.WhereStatement;
 
 public class EntityTest extends
 ActivityInstrumentationTestCase2<MainActivity>{
@@ -111,6 +114,21 @@ ActivityInstrumentationTestCase2<MainActivity>{
 
 	}
 	
-	
+	public void test_1_6_SelectWhereAccept1(){
+		try {
+			Repository repository = new Repository(mActivity, Usuario.class,"teste",1);
+			List<FieldTO> fields = new ArrayList<FieldTO>();
+			fields.add(new FieldTO("name",new Long(3)));
+			fields.add(new FieldTO("endereco","teste"));
+			WhereStatement where = new WhereStatement(fields);
+			List<TransferObject> list = repository.select(where); 
+			assertNotNull(list);
+			assertTrue(list.size()>0);
+		} catch (Exception e) {
+			fail("not pass here " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+
+	}
 	
 }
