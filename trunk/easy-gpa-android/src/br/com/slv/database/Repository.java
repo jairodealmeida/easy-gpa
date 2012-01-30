@@ -13,6 +13,9 @@ import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
 import br.com.slv.database.dao.statement.StatementFactory;
+import br.com.slv.database.dao.statement.operation.SelectStatement;
+import br.com.slv.database.dao.statement.operation.StatementArguments;
+import br.com.slv.database.dao.statement.operation.WhereStatement;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -327,13 +330,19 @@ public class Repository  {
 	 * @param whereClause - Where clause
 	 * @return List<TransferObject> select entities result from database
 	 */
-	public List<TransferObject> select(String tableName, 
-											String whereClause){
+	public List<TransferObject> select(WhereStatement whereClause){
 	    long start, end;
 	    start = (new java.util.Date()).getTime(); 
+	    String tableName = this.getTableName();
 	    List<TransferObject> items = new ArrayList<TransferObject>();
 	    Cursor c = null;
+	    StatementArguments arguments = new StatementArguments(tableName);
+	    
+	    arguments.setWhereClause(whereClause.createWhereStatement().toString());
+	    SelectStatement sql = new SelectStatement(arguments);
 		try {
+			c = getDb().rawQuery(sql.createStatement().toString(), whereClause.getArguments());
+			/*
 	        c = getDb().query(
 	        	tableName, 
 	        	null,   
@@ -341,7 +350,7 @@ public class Repository  {
 	        	null, 
 	        	null, 
 	        	null,
-	            null);  
+	            null);  */
 	        c.moveToFirst();  
 	        if(!c.isAfterLast()){  
 	        	TransferObject bean = this.fill(c);
