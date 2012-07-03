@@ -1,11 +1,17 @@
 package br.com.slv.database;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
+
 import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.entity.annotation.GPAEntity;
 import br.com.slv.database.dao.entity.annotation.GPAField;
@@ -32,6 +38,8 @@ public class Repository  {
 	private SQLiteDatabase db;  
 	private Class<?> entity;
 	
+	private Context context;
+	
 	public String getTableName() {
 		Annotation annoClass = entity.getAnnotation(GPAEntity.class);
 		GPAEntity anno = (GPAEntity)annoClass;
@@ -45,7 +53,7 @@ public class Repository  {
 	 * @param databaseName
 	 * @param version
 	 * @throws Exception
-	 */
+	 *//*
 	public Repository(Context ctx,
 						Class<?> entity,
 						String databaseName,
@@ -58,7 +66,55 @@ public class Repository  {
                 createScript(), 
                 deleteScript());  
         db = dbHelper.getWritableDatabase();  
+	}*/
+	
+	public Repository( 
+			Context ctx, 
+			String dataBaseName, 
+			String dataBasePath, 
+			int dataBaseVersion,
+			Class<?> entity){
+	    this.context = ctx;
+	    //final String DB_PATH = "/data/data/br.azeitona.app/databases/";
+		final String DB_DESTINATION = dataBasePath + dataBaseName;
+		try {
+			// Check if the database exists before copying
+			boolean initialiseDatabase = (new File(DB_DESTINATION)).exists();
+			if (initialiseDatabase == false) {
+				//Preferences.setDatabaseName(dataBaseName);
+			    // Open the .db file in your assets directory
+			    InputStream is = ctx.getAssets().open(dataBaseName);
+			    
+			    File dirDb = new File(dataBasePath);
+			    if (!dirDb.exists()){
+			    	dirDb.mkdirs();
+			    }
+			    // Copy the database into the destination
+			    OutputStream os = new FileOutputStream(DB_DESTINATION);
+			    byte[] buffer = new byte[1024];
+			    int length;
+			    while ((length = is.read(buffer)) > 0){
+			        os.write(buffer, 0, length);
+			    }
+			    os.flush();
+			    os.close();
+			    is.close();
+			}
+		} catch (Exception e) {
+			Log.e("ERROR",e.getLocalizedMessage(),e);
+		}
+		if(db!=null){
+			db.close();
+		}
+	    SQLiteHelper dbHelper = new SQLiteHelper(ctx,  
+	    		dataBaseName, 
+	       		dataBaseVersion,   
+	            null, 
+	            null);  
+	    db = dbHelper.getWritableDatabase();
+
 	}
+	
 	/**
 	 * 
 	 */
@@ -240,7 +296,54 @@ public class Repository  {
 		}
 		return 0;
 	}
-
+	public long insert(List<Entity> entities){
+		try {
+			int sum = 0;
+			getDb().beginTransaction();
+			for (Entity entity : entities) {
+				sum += insert(entity);	
+			}
+			getDb().setTransactionSuccessful();	
+			return sum;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			getDb().endTransaction();
+		}
+		return 0;
+	}
+	public long update(List<Entity> entities){
+		try {
+			int sum = 0;
+			getDb().beginTransaction();
+			for (Entity entity : entities) {
+				sum += update(entity);	
+			}
+			getDb().setTransactionSuccessful();	
+			return sum;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			getDb().endTransaction();
+		}
+		return 0;
+	}
+	public long delete(List<Entity> entities){
+		try {
+			int sum = 0;
+			getDb().beginTransaction();
+			for (Entity entity : entities) {
+				sum += delete(entity);	
+			}
+			getDb().setTransactionSuccessful();	
+			return sum;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			getDb().endTransaction();
+		}
+		return 0;
+	}
 	/**
 	 * method will use to update objects
 	 * @return "success or fail"
@@ -594,6 +697,16 @@ public class Repository  {
     		return new FieldTO(name, c.getInt(columnIndex));
     	if(type==Entity.LONG)
     		return new FieldTO(name, c.getLong(columnIndex));
+    	if(type==Entity.FLOAT)
+    		return new FieldTO(name, c.getFloat(columnIndex));
+    	if(type==Entity.DATE)
+    		return new FieldTO(name, c.getString(columnIndex));
+       	if(type==Entity.BLOB)
+    		return new FieldTO(name, c.getBlob(columnIndex));
+     	if(type==Entity.BEAN){
+    		return new FieldTO(name, c.getInt(columnIndex));
+     	}
+    	
     	return null;
 }
 }
