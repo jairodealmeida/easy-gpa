@@ -17,12 +17,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }  
   
     public void onCreate(SQLiteDatabase db) {  
-        db.execSQL(scriptCreate);  
+        //db.execSQL(scriptCreate);  
     }  
   
     public void onUpgrade(SQLiteDatabase db,   
         int oldVersion, int newVersion) {  
-        db.execSQL(scriptDelete);  
-        onCreate(db);  
+        //db.execSQL(scriptDelete);  
+        //onCreate(db);  
     } 
 }  

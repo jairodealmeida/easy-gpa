@@ -4,18 +4,42 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 
+import android.util.Log;
 import br.com.slv.database.dao.entity.annotation.GPAEntity;
 import br.com.slv.database.dao.entity.annotation.GPAField;
 import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
+import br.com.slv.database.dao.model.TransferObject;
 
 public abstract class Entity implements Serializable{
 	
 	public static final int VARCHAR = 1;
 	public static final int INTEGER = 2;
 	public static final int LONG = 3;
+	public static final int FLOAT = 4;
+	public static final int DATE =  5;
+	public static final int BLOB =  6;
+	public static final int BEAN =  7;
+	
+	/**
+	 * metodo que gera um ID randomico 
+	 * @return Long - chave  única
+	 * @throws NoSuchAlgorithmException 
+	 */
+	public static Long getIdRandomico() {
+		long random;
+		try {
+			random = SecureRandom.getInstance("SHA1PRNG").nextInt(99999999);
+			return random;
+		} catch (NoSuchAlgorithmException e) {
+			Log.e("ERROR",e.getLocalizedMessage(),e); 
+		}
+		return null;
+	}
 	
 	public String getXML(){
 		try {
@@ -37,6 +61,38 @@ public abstract class Entity implements Serializable{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public void valuable(TransferObject to){
+		try {
+			Field[] fields = this.getClass().getDeclaredFields();	
+			for(int i=0; i<fields.length; i++){
+				Field reflectionField = fields[i];
+				reflectionField.setAccessible(true);
+				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
+				Annotation annoFieldPK = reflectionField.getAnnotation(GPAPrimaryKey.class);
+				/* 
+				 ainda falta validar a chave primária do objeto
+				 por enquanto so esta prevendo pk usando sequence no banco
+				 objeto id sempre é gerado no banco por uma sequence
+				*/
+				if(annoFieldPK!=null && annoFieldPK instanceof GPAPrimaryKey){
+					GPAPrimaryKey pk = (GPAPrimaryKey)annoFieldPK;
+					String name = pk.name();
+					Object value = to.getValue(name);
+					reflectionField.set(this, value);
+					continue;
+				}
+				if(annoField!=null && annoField instanceof GPAField){
+					GPAField field = (GPAField)annoField;
+					String name = field.name();
+					Object value = to.getValue(name);
+					reflectionField.set(this, value);
+					continue;
+				}
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * method used to get a table name of entity
