@@ -75,6 +75,7 @@ public class Repository  {
 			int dataBaseVersion,
 			Class<?> entity){
 	    this.context = ctx;
+	    this.entity = entity;
 	    //final String DB_PATH = "/data/data/br.azeitona.app/databases/";
 		final String DB_DESTINATION = dataBasePath + dataBaseName;
 		try {
@@ -292,7 +293,7 @@ public class Repository  {
 						TransferObject.INSERT_TYPE);
 			return transactStatements(to);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}
 		return 0;
 	}
@@ -306,7 +307,7 @@ public class Repository  {
 			getDb().setTransactionSuccessful();	
 			return sum;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}finally{
 			getDb().endTransaction();
 		}
@@ -322,7 +323,7 @@ public class Repository  {
 			getDb().setTransactionSuccessful();	
 			return sum;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}finally{
 			getDb().endTransaction();
 		}
@@ -338,7 +339,7 @@ public class Repository  {
 			getDb().setTransactionSuccessful();	
 			return sum;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}finally{
 			getDb().endTransaction();
 		}
@@ -359,7 +360,7 @@ public class Repository  {
 						TransferObject.UPDATE_TYPE);
 			return transactStatements(to);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}
 		return 0;
 	}
@@ -382,7 +383,7 @@ public class Repository  {
 			
 			return transactStatements(to);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}
 		return 0;
 	}
@@ -398,7 +399,7 @@ public class Repository  {
 						TransferObject.DELETE_TYPE);
 			return transactStatements(to);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}
 		return 0;
 	}
@@ -410,15 +411,17 @@ public class Repository  {
 		try {
 			String tableName = this.getTableName();
 			c = getDb().query(
-				tableName, null, null, null, null, null, null);  
-				c.moveToFirst();  
-				if(!c.isAfterLast()){  
-					TransferObject bean = this.fill(c);
-					items.add( bean ); 
-				} 
+			tableName, null, null, null, null, null, null);  
+			c.moveToFirst();  
+			while(!c.isAfterLast()){  
+				TransferObject bean = this.fill(c);
+				items.add( bean ); 
+				c.moveToNext();  
+			} 
+			c.close();
 			return items;
 		} catch (Exception e) {
-			Log.e("GPALOG" , e.getMessage()); 
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}finally{
 			if(c!=null){c.close();}
 			end = (new java.util.Date()).getTime();
@@ -455,13 +458,15 @@ public class Repository  {
 	        	null,
 	            null);  */
 	        c.moveToFirst();  
-	        if(!c.isAfterLast()){  
+	        while(!c.isAfterLast()){  
 	        	TransferObject bean = this.fill(c);
 	        	items.add( bean ); 
+	        	c.moveToNext();  
 	        } 
+	        c.close();
 	        return items;
 		} catch (Exception e) {
-			Log.e("GPALOG" , e.getMessage()); 
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}finally{
 			   if(c!=null){c.close();}
 	           end = (new java.util.Date()).getTime();
@@ -499,7 +504,7 @@ public class Repository  {
 	            return bean; 
 	        }      
 		} catch (Exception e) {
-			Log.e("GPALOG" , e.getMessage()); 
+			Log.e("GPALOG" , e.getMessage(),e); 
 		}finally{
 			   if(c!=null){c.close();}
 	           end = (new java.util.Date()).getTime();
@@ -669,43 +674,53 @@ public class Repository  {
 	@Deprecated //TODO remove the newInstance to accept primitive types
 	//substitute to annotation type, to get more flexibility data types 
 	//use {@link getField}
-	private FieldTO getFieldAt(Cursor c, String name, Field field, int columnIndex) throws IllegalAccessException, InstantiationException{
-			Object type = field.getType().newInstance();
-    		if(type instanceof String)
-    			return new FieldTO(name, c.getString(columnIndex));
-	    	if(type instanceof Integer)	
-	    		return new FieldTO(name, c.getInt(columnIndex));
-	    	if(type instanceof Long)
-	    		return new FieldTO(name, c.getLong(columnIndex));
-	    	if(type instanceof BigDecimal)
-	    		return new FieldTO(name, c.getLong(columnIndex));
-	    	if(type instanceof Double)
-	    		return new FieldTO(name, c.getDouble(columnIndex));
-	    	if(type instanceof Float)
-	    		return new FieldTO(name, c.getFloat(columnIndex));
-	    	if(type instanceof byte[])
-	    		return new FieldTO(name, c.getBlob(columnIndex));
-	    	if(type instanceof Short)
-	    		return new FieldTO(name, c.getShort(columnIndex));
+	private FieldTO getFieldAt(Cursor c, String name, Field field, int columnIndex) 
+			throws IllegalAccessException, InstantiationException{
+			try {
+				Object type = field.getType().newInstance();
+	    		if(type instanceof String)
+	    			return new FieldTO(name, c.getString(c.getColumnIndex(name)));
+		    	if(type instanceof Integer)	
+		    		return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
+		    	if(type instanceof Long)
+		    		return new FieldTO(name, c.getLong(c.getColumnIndex(name)));
+		    	if(type instanceof BigDecimal)
+		    		return new FieldTO(name, c.getLong(c.getColumnIndex(name)));
+		    	if(type instanceof Double)
+		    		return new FieldTO(name, c.getDouble(c.getColumnIndex(name)));
+		    	if(type instanceof Float)
+		    		return new FieldTO(name, c.getFloat(c.getColumnIndex(name)));
+		    	if(type instanceof byte[])
+		    		return new FieldTO(name, c.getBlob(c.getColumnIndex(name)));
+		    	if(type instanceof Short)
+		    		return new FieldTO(name, c.getShort(c.getColumnIndex(name)));
+			} catch (Exception e) {
+				Log.e("GPALOG" , e.getMessage(),e); 
+			}
+
 	    	return null;
 	}
 	private FieldTO getFieldAt(Cursor c, String name, int type, int columnIndex) throws IllegalAccessException, InstantiationException{
-		
-		if(type==Entity.VARCHAR)
-			return new FieldTO(name, c.getString(columnIndex));
-    	if(type==Entity.INTEGER)	
-    		return new FieldTO(name, c.getInt(columnIndex));
-    	if(type==Entity.LONG)
-    		return new FieldTO(name, c.getLong(columnIndex));
-    	if(type==Entity.FLOAT)
-    		return new FieldTO(name, c.getFloat(columnIndex));
-    	if(type==Entity.DATE)
-    		return new FieldTO(name, c.getString(columnIndex));
-       	if(type==Entity.BLOB)
-    		return new FieldTO(name, c.getBlob(columnIndex));
-     	if(type==Entity.BEAN){
-    		return new FieldTO(name, c.getInt(columnIndex));
-     	}
+		try {
+			if(type==Entity.VARCHAR)
+				return new FieldTO(name, c.getString(c.getColumnIndex(name)));
+	    	if(type==Entity.INTEGER)	
+	    		return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
+	    	if(type==Entity.LONG)
+	    		return new FieldTO(name, c.getLong(c.getColumnIndex(name)));
+	    	if(type==Entity.FLOAT)
+	    		return new FieldTO(name, c.getFloat(c.getColumnIndex(name)));
+	    	if(type==Entity.DATE)
+	    		return new FieldTO(name, c.getString(c.getColumnIndex(name)));
+	       	if(type==Entity.BLOB)
+	    		return new FieldTO(name, c.getBlob(c.getColumnIndex(name)));
+	     	if(type==Entity.BEAN){
+	    		return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
+	     	}
+		} catch (Exception e) {
+			Log.e("GPALOG" , e.getMessage(),e); 
+		}
+	
     	
     	return null;
 }
