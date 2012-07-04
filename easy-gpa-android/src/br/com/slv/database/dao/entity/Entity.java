@@ -63,9 +63,13 @@ public abstract class Entity implements Serializable{
 		return null;
 	}
 	public void valuable(TransferObject to){
-		try {
+		//try {
 			Field[] fields = this.getClass().getDeclaredFields();	
 			for(int i=0; i<fields.length; i++){
+				
+				try {
+					
+
 				Field reflectionField = fields[i];
 				reflectionField.setAccessible(true);
 				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
@@ -89,10 +93,14 @@ public abstract class Entity implements Serializable{
 					reflectionField.set(this, value);
 					continue;
 				}
+				
+				} catch (Exception e) {
+					Log.e("ERROR",e.getLocalizedMessage(),e); 
+				}
 			}	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//} catch (Exception e) {
+		//	e.printStackTrace();
+		//}
 	}
 	/**
 	 * method used to get a table name of entity
