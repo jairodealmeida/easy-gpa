@@ -8,13 +8,17 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.prefs.Preferences;
 
+import br.com.gpa.util.DateUtil;
 import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.entity.annotation.GPAEntity;
 import br.com.slv.database.dao.entity.annotation.GPAField;
+import br.com.slv.database.dao.entity.annotation.GPAFieldBean;
 import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
@@ -175,6 +179,7 @@ public class Repository  {
 				reflectionField.setAccessible(true);
 				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
 				Annotation annoFieldPK = reflectionField.getAnnotation(GPAPrimaryKey.class);
+				Annotation annoFieldBean = reflectionField.getAnnotation(GPAFieldBean.class);
 				/* 
 				 ainda falta validar a chave primária do objeto
 				 por enquanto so esta prevendo pk usando sequence no banco
@@ -194,6 +199,16 @@ public class Repository  {
 				}
 				if(annoField!=null && annoField instanceof GPAField){
 					GPAField field = (GPAField)annoField;
+					String name = field.name();
+					Class<?> type = reflectionField.getType();
+					sb.append( name + " " + getSqLiteType(type));
+					if(i<fields.length-1){
+						sb.append(",");
+					}
+					continue;
+				}
+				if(annoFieldBean!=null && annoFieldBean instanceof GPAFieldBean){
+					GPAFieldBean field = (GPAFieldBean)annoFieldBean;
 					String name = field.name();
 					Class<?> type = reflectionField.getType();
 					sb.append( name + " " + getSqLiteType(type));
@@ -253,6 +268,7 @@ public class Repository  {
 				reflectionField.setAccessible(true);
 				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
 				Annotation annoFieldPK = reflectionField.getAnnotation(GPAPrimaryKey.class);
+				Annotation annoFieldBean = reflectionField.getAnnotation(GPAFieldBean.class);
 				/* 
 				 ainda falta validar a chave primária do objeto
 				 por enquanto so esta prevendo pk usando sequence no banco
@@ -265,12 +281,19 @@ public class Repository  {
 					//}else{
 					String name = pk.name();
 					Object value = reflectionField.get(entity);
-					primaryKeyTos.add(new FieldTO(name, value));
+					fieldTos.add(new FieldTO(name, value));
 					continue;
 					//}
 				}
 				if(annoField!=null && annoField instanceof GPAField){
 					GPAField field = (GPAField)annoField;
+					String name = field.name();
+					Object value = reflectionField.get(entity);
+					fieldTos.add(new FieldTO(name, value));
+					continue;
+				}
+				if(annoFieldBean!=null && annoFieldBean instanceof GPAFieldBean){
+					GPAFieldBean field = (GPAFieldBean)annoFieldBean;
 					String name = field.name();
 					Object value = reflectionField.get(entity);
 					fieldTos.add(new FieldTO(name, value));
@@ -448,15 +471,7 @@ public class Repository  {
 	    SelectStatement sql = new SelectStatement(arguments);
 		try {
 			c = getDb().rawQuery(sql.createStatement().toString(), whereClause.getArguments());
-			/*
-	        c = getDb().query(
-	        	tableName, 
-	        	null,   
-	        	null, 
-	        	null, 
-	        	null, 
-	        	null,
-	            null);  */
+			Log.i("GPA", sql.createStatement().toString());
 	        c.moveToFirst();  
 	        while(!c.isAfterLast()){  
 	        	TransferObject bean = this.fill(c);
@@ -474,7 +489,32 @@ public class Repository  {
 		}
 		return null;
 	}
-	
+	public  List<TransferObject> rawQuery(StringBuilder sql, String[] args){
+	    long start, end;
+	    start = (new java.util.Date()).getTime(); 
+	    List<TransferObject> items = new ArrayList<TransferObject>();
+	    Cursor c = null;
+		try {
+			c = getDb().rawQuery(sql.toString(), args);
+			Log.i("GPA", sql.toString());
+	        c.moveToFirst();  
+	        while(!c.isAfterLast()){  
+	        	TransferObject bean = this.fill(c);
+	        	items.add( bean ); 
+	        	c.moveToNext();  
+	        } 
+	        c.close();
+	        return items;
+		} catch (Exception e) {
+			Log.e("GPALOG" , e.getMessage(),e); 
+		}finally{
+			   if(c!=null){c.close();}
+	           end = (new java.util.Date()).getTime();
+	           Log.i("GPALOG", "Time to query: " + (end - start) + " ms");
+		}
+		return null;
+		
+	}
 	/**
 	 * Method to get resultset collections from database
 	 * this methodo works with select sintax
@@ -553,6 +593,8 @@ public class Repository  {
 		    	if(value instanceof Float)		{cv.put(name, (Float) value);}
 		    	if(value instanceof byte[])		{cv.put(name, (byte[]) value );} 
 		    	if(value instanceof Short)		{cv.put(name, (Short) value);}
+		    	if(value instanceof Date)		{cv.put(name, DateUtil.parseString((Date)value, DateUtil.DD_MM_YYYY_HH_MM_SS));}
+		    	if(value instanceof Entity)		{cv.put(name, ((Entity)value).getId()) ;}
 	    	}
 	    }
 	    return getDb().insert(getTableName(), null, cv);
@@ -640,6 +682,7 @@ public class Repository  {
 				reflectionField.setAccessible(true);
 				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
 				Annotation annoFieldPK = reflectionField.getAnnotation(GPAPrimaryKey.class);
+				Annotation annoFieldBean = reflectionField.getAnnotation(GPAFieldBean.class);
 				/* 
 				 ainda falta validar a chave primária do objeto
 				 por enquanto so esta prevendo pk usando sequence no banco
@@ -663,6 +706,15 @@ public class Repository  {
 					//}
 					continue;
 				}
+				if(annoFieldBean!=null && annoFieldBean instanceof GPAFieldBean){
+					GPAFieldBean field = (GPAFieldBean)annoFieldBean;
+					String name = field.name();
+					int type = field.type();
+					//if(!c.isNull(i)){
+						fieldsResult.add( getFieldAt(c, name, type, i) );
+					//}
+					continue;
+				}
 			}
 		}
 		TransferObject to = new TransferObject(
@@ -671,6 +723,46 @@ public class Repository  {
 				TransferObject.READ_TYPE);
 		return to;
 	}
+	
+	
+	private TransferObject fillTO(Cursor c) throws IllegalAccessException, InstantiationException{
+		ArrayList<FieldTO> fields = new ArrayList<FieldTO>();
+		 while (c.moveToNext()) {
+			 	for(int col=0;col<c.getColumnCount();col++){
+			 		Object type = c.getClass();
+			 		String name = c.getColumnName(col);
+					try {
+						
+						//Object type = field.getType().newInstance();
+			    		if(type instanceof String)
+			    			fields.add( new FieldTO(name, c.getString(col)));
+				    	if(type instanceof Integer)	
+				    		fields.add( new FieldTO(name, c.getInt(c.getColumnIndex(name))));
+				    	if(type instanceof Long)
+				    		fields.add( new FieldTO(name, c.getLong(c.getColumnIndex(name))));
+				    	if(type instanceof BigDecimal)
+				    		fields.add( new FieldTO(name, c.getLong(c.getColumnIndex(name))));
+				    	if(type instanceof Double)
+				    		fields.add( new FieldTO(name, c.getDouble(c.getColumnIndex(name))));
+				    	if(type instanceof Float)
+				    		fields.add( new FieldTO(name, c.getFloat(c.getColumnIndex(name))));
+				    	if(type instanceof byte[])
+				    		fields.add( new FieldTO(name, c.getBlob(c.getColumnIndex(name))));
+				    	if(type instanceof Short)
+				    		fields.add( new FieldTO(name, c.getShort(c.getColumnIndex(name))));
+					} catch (Exception e) {
+						Log.e("GPALOG" , e.getMessage(),e); 
+					}
+			 	}
+		    }
+		TransferObject to = new TransferObject(
+				getTableName(),
+				fields,
+				TransferObject.READ_TYPE);
+		return to;
+	}
+	
+	
 	@Deprecated //TODO remove the newInstance to accept primitive types
 	//substitute to annotation type, to get more flexibility data types 
 	//use {@link getField}
@@ -711,14 +803,14 @@ public class Repository  {
 	    	if(type==Entity.FLOAT)
 	    		return new FieldTO(name, c.getFloat(c.getColumnIndex(name)));
 	    	if(type==Entity.DATE)
-	    		return new FieldTO(name, c.getString(c.getColumnIndex(name)));
+	    		return new FieldTO(name, DateUtil.parseDate( c.getString(c.getColumnIndex(name)) ));
 	       	if(type==Entity.BLOB)
 	    		return new FieldTO(name, c.getBlob(c.getColumnIndex(name)));
 	     	if(type==Entity.BEAN){
 	    		return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
 	     	}
 		} catch (Exception e) {
-			Log.e("GPALOG" , e.getMessage(),e); 
+			Log.e("GPALOG" , "fail to mapping " + name + " : " + e.getMessage(),e); 
 		}
 	
     	
