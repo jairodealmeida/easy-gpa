@@ -41,7 +41,7 @@ public class SelectStatement implements Selectable{
 			result.append("FROM ");
 			result.append(arguments.getTableName());
 			if(arguments.getWhereClause()!=null){
-				result.append(" WHERE ");
+				//result.append(" WHERE ");
 				result.append(arguments.getWhereClause());	
 			}
 			return result;

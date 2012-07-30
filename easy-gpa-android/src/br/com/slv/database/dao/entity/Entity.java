@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import android.util.Log;
 import br.com.slv.database.dao.entity.annotation.GPAEntity;
 import br.com.slv.database.dao.entity.annotation.GPAField;
+import br.com.slv.database.dao.entity.annotation.GPAFieldBean;
 import br.com.slv.database.dao.entity.annotation.GPAPrimaryKey;
 import br.com.slv.database.dao.model.FieldTO;
 import br.com.slv.database.dao.model.TransferObject;
@@ -24,6 +25,11 @@ public abstract class Entity implements Serializable{
 	public static final int DATE =  5;
 	public static final int BLOB =  6;
 	public static final int BEAN =  7;
+	
+	private Integer id;
+	
+	public abstract void setId(Integer id);
+	public abstract Integer getId();
 	
 	/**
 	 * metodo que gera um ID randomico 
@@ -73,6 +79,7 @@ public abstract class Entity implements Serializable{
 				Field reflectionField = fields[i];
 				reflectionField.setAccessible(true);
 				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
+				Annotation annoFieldBean = reflectionField.getAnnotation(GPAFieldBean.class);
 				Annotation annoFieldPK = reflectionField.getAnnotation(GPAPrimaryKey.class);
 				/* 
 				 ainda falta validar a chave primária do objeto
@@ -91,6 +98,15 @@ public abstract class Entity implements Serializable{
 					String name = field.name();
 					Object value = to.getValue(name);
 					reflectionField.set(this, value);
+					continue;
+				}
+				if(annoFieldBean!=null && annoFieldBean instanceof GPAFieldBean){
+					GPAFieldBean field = (GPAFieldBean)annoFieldBean;
+					String name = field.name();
+					Object value = to.getValue(name);
+					Entity newInstance = (Entity)reflectionField.getType().newInstance();
+					newInstance.setId((Integer)value );
+					reflectionField.set(this, newInstance);
 					continue;
 				}
 				
