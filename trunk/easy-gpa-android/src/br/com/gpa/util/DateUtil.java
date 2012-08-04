@@ -52,38 +52,9 @@ public class DateUtil
 				date = date.replace('-', '/');
 			}			
 			if ( date.indexOf('/') >= 4 ) {
-				if ( date.length() == 10 ) { // yyyy/MM/dd
-					parsed = DateUtil.parseDate(date, "yyyy/MM/dd");
-				}
+				parsed = DateUtil.formatDate(date);
 			} else {
-				if ( date.length() == 6 && date.indexOf("/") == 1 ) { // M/yyyy
-					parsed = DateUtil.parseDate(date, "M/yyyy");
-				} else if ( date.length() == 7 && date.indexOf("/") == 2 ) { // MM/yyyy
-					parsed = DateUtil.parseDate(date, "MM/yyyy");
-				} else if ( date.length() == 8 ) { // d/M/yyyy
-					parsed = DateUtil.parseDate(date, "d/M/yyyy");
-				} else if ( date.length() == 9 && date.indexOf("/") == 2 ) { // dd/M/yyyy
-					parsed = DateUtil.parseDate(date, "dd/M/yyyy");
-				} else if ( date.length() == 9 && date.indexOf("/") == 1 ) { // d/MM/yyyy
-					parsed = DateUtil.parseDate(date, "d/MM/yyyy");
-				} else if ( date.length() == 10 ) { // dd/MM/yyyy
-					parsed = DateUtil.parseDate(date, "dd/MM/yyyy");
-				} else if ( date.length() == 16 ) { // dd/MM/yyyy HH:mm
-					parsed = DateUtil.parseDate(date, "dd/MM/yyyy HH:mm");
-				} else if ( date.length() == 17 && date.indexOf("/") == 1 ) { // d/M/yyyy HH:mm:ss
-					parsed = DateUtil.parseDate(date, "d/M/yyyy HH:mm:ss");
-				} else if ( date.length() == 18 && date.indexOf("/") == 2 ) { // dd/M/yyyy HH:mm:ss
-					parsed = DateUtil.parseDate(date, "dd/M/yyyy HH:mm:ss");
-				} else if ( date.length() == 18 && date.indexOf("/") == 1 ) { // d/MM/yyyy  HH:mm:ss
-					parsed = DateUtil.parseDate(date, "d/MM/yyyy HH:mm:ss");
-				} else if ( date.length() == 19 ) { // dd/MM/yyyy HH:mm:ss
-					parsed = DateUtil.parseDate(date, "dd/MM/yyyy HH:mm:ss"); 
-				} else if ( date.length() >= 21 ) { // dd/MM/yyyy HH:mm:ss.S
-					parsed = DateUtil.parseDate(date, "dd/MM/yyyy HH:mm:ss.S");				
-				} else {
-					// caso a data seja �nvalida, retorna a data atual
-					parsed = new Date();
-				}				
+				parsed = DateUtil.formatDate(date);
 			}
 				
 		} catch (ParseException e) {
@@ -92,7 +63,38 @@ public class DateUtil
 		}
 		return parsed;
 	}	
-	
+	public static Date formatDate(String date) throws Exception{
+		Date parsed = null;
+		if ( date.length() == 6 && date.indexOf("/") == 1 ) { // M/yyyy
+			parsed = DateUtil.parseDate(date, "M/yyyy");
+		} else if ( date.length() == 7 && date.indexOf("/") == 2 ) { // MM/yyyy
+			parsed = DateUtil.parseDate(date, "MM/yyyy");
+		} else if ( date.length() == 8 ) { // d/M/yyyy
+			parsed = DateUtil.parseDate(date, "d/M/yyyy");
+		} else if ( date.length() == 9 && date.indexOf("/") == 2 ) { // dd/M/yyyy
+			parsed = DateUtil.parseDate(date, "dd/M/yyyy");
+		} else if ( date.length() == 9 && date.indexOf("/") == 1 ) { // d/MM/yyyy
+			parsed = DateUtil.parseDate(date, "d/MM/yyyy");
+		} else if ( date.length() == 10 ) { // dd/MM/yyyy
+			parsed = DateUtil.parseDate(date, "dd/MM/yyyy");
+		} else if ( date.length() == 16 ) { // dd/MM/yyyy HH:mm
+			parsed = DateUtil.parseDate(date, "dd/MM/yyyy HH:mm");
+		} else if ( date.length() == 17 && date.indexOf("/") == 1 ) { // d/M/yyyy HH:mm:ss
+			parsed = DateUtil.parseDate(date, "d/M/yyyy HH:mm:ss");
+		} else if ( date.length() == 18 && date.indexOf("/") == 2 ) { // dd/M/yyyy HH:mm:ss
+			parsed = DateUtil.parseDate(date, "dd/M/yyyy HH:mm:ss");
+		} else if ( date.length() == 18 && date.indexOf("/") == 1 ) { // d/MM/yyyy  HH:mm:ss
+			parsed = DateUtil.parseDate(date, "d/MM/yyyy HH:mm:ss");
+		} else if ( date.length() == 19 ) { // dd/MM/yyyy HH:mm:ss
+			parsed = DateUtil.parseDate(date, "dd/MM/yyyy HH:mm:ss"); 
+		} else if ( date.length() >= 21 ) { // dd/MM/yyyy HH:mm:ss.S
+			parsed = DateUtil.parseDate(date, "dd/MM/yyyy HH:mm:ss.S");				
+		} else {
+			// caso a data seja �nvalida, retorna a data atual
+			parsed = new Date();
+		}	
+		return parsed;
+	}
 	/**
 	 * Converte em data (java.util.Date) uma String usando o Locale default
 	 * @param date - objeto de data em formato String dd/MM/yyyy

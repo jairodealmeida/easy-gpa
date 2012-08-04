@@ -25,6 +25,7 @@ public abstract class Entity implements Serializable{
 	public static final int DATE =  5;
 	public static final int BLOB =  6;
 	public static final int BEAN =  7;
+	public static final int DOUBLE = 8;
 	
 	private Integer id;
 	
@@ -72,15 +73,12 @@ public abstract class Entity implements Serializable{
 		//try {
 			Field[] fields = this.getClass().getDeclaredFields();	
 			for(int i=0; i<fields.length; i++){
-				
-				try {
-					
-
 				Field reflectionField = fields[i];
 				reflectionField.setAccessible(true);
 				Annotation annoField = reflectionField.getAnnotation(GPAField.class);
 				Annotation annoFieldBean = reflectionField.getAnnotation(GPAFieldBean.class);
 				Annotation annoFieldPK = reflectionField.getAnnotation(GPAPrimaryKey.class);
+				try {
 				/* 
 				 ainda falta validar a chave primária do objeto
 				 por enquanto so esta prevendo pk usando sequence no banco
@@ -90,28 +88,38 @@ public abstract class Entity implements Serializable{
 					GPAPrimaryKey pk = (GPAPrimaryKey)annoFieldPK;
 					String name = pk.name();
 					Object value = to.getValue(name);
-					reflectionField.set(this, value);
+					if(value!=null){
+						reflectionField.set(this, value);
+					}
 					continue;
 				}
 				if(annoField!=null && annoField instanceof GPAField){
 					GPAField field = (GPAField)annoField;
 					String name = field.name();
 					Object value = to.getValue(name);
-					reflectionField.set(this, value);
+					if(value!=null){
+						reflectionField.set(this, value);
+					}
 					continue;
 				}
 				if(annoFieldBean!=null && annoFieldBean instanceof GPAFieldBean){
 					GPAFieldBean field = (GPAFieldBean)annoFieldBean;
 					String name = field.name();
 					Object value = to.getValue(name);
-					Entity newInstance = (Entity)reflectionField.getType().newInstance();
-					newInstance.setId((Integer)value );
-					reflectionField.set(this, newInstance);
+					if(value!=null){
+							Entity newInstance = (Entity)reflectionField.getType().newInstance();
+							newInstance.setId((Integer)value );
+							reflectionField.set(this, newInstance);
+					}
 					continue;
 				}
 				
 				} catch (Exception e) {
-					Log.e("ERROR",e.getLocalizedMessage(),e); 
+					String name = null;
+					if(annoFieldPK!=null) name = ((GPAPrimaryKey)annoFieldPK).name();
+					if(annoField!=null) name = ((GPAField)annoField).name();
+					if(annoFieldBean!=null) name = ((GPAFieldBean)annoFieldBean).name();
+					Log.e("ERROR","name = " + name + " " + e.getLocalizedMessage(),e); 
 				}
 			}	
 		//} catch (Exception e) {
