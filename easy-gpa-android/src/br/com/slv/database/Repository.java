@@ -792,28 +792,30 @@ public class Repository  {
 
 	    	return null;
 	}
-	private FieldTO getFieldAt(Cursor c, String name, int type, int columnIndex) throws IllegalAccessException, InstantiationException{
+	private FieldTO getFieldAt(Cursor c, String name, int type, int columnIndex) 
+			throws IllegalAccessException, InstantiationException{
 		try {
-			if(type==Entity.VARCHAR)
+			switch (type) {
+			case Entity.VARCHAR:
 				return new FieldTO(name, c.getString(c.getColumnIndex(name)));
-	    	if(type==Entity.INTEGER)	
-	    		return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
-	    	if(type==Entity.LONG)
-	    		return new FieldTO(name, c.getLong(c.getColumnIndex(name)));
-	    	if(type==Entity.FLOAT)
-	    		return new FieldTO(name, c.getFloat(c.getColumnIndex(name)));
-	    	if(type==Entity.DATE)
-	    		return new FieldTO(name, DateUtil.parseDate( c.getString(c.getColumnIndex(name)) ));
-	       	if(type==Entity.BLOB)
-	    		return new FieldTO(name, c.getBlob(c.getColumnIndex(name)));
-	     	if(type==Entity.BEAN){
-	    		return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
-	     	}
+			case Entity.INTEGER:
+				return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
+			case Entity.LONG:
+				return new FieldTO(name, c.getLong(c.getColumnIndex(name)));
+			case Entity.FLOAT:
+				return new FieldTO(name, c.getFloat(c.getColumnIndex(name)));
+			case Entity.DATE:
+				return new FieldTO(name, DateUtil.parseDate( c.getString(c.getColumnIndex(name)) ));
+			case Entity.BLOB:
+				return new FieldTO(name, c.getBlob(c.getColumnIndex(name)));
+			case Entity.DOUBLE:
+				return new FieldTO(name, c.getDouble(c.getColumnIndex(name)));
+			case Entity.BEAN:
+				return new FieldTO(name, c.getInt(c.getColumnIndex(name)));
+			}
 		} catch (Exception e) {
 			Log.e("GPALOG" , "fail to mapping " + name + " : " + e.getMessage(),e); 
 		}
-	
-    	
-    	return null;
-}
+	    return null;
+	}
 }
