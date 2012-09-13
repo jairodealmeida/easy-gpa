@@ -38,6 +38,8 @@ import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.gml2.*;
 import java.util.*;
 import java.io.*;
+import java.net.URL;
+
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -51,8 +53,8 @@ import org.xml.sax.helpers.DefaultHandler;
 public class KMLReaderExample {
   public static void main(String[] args)
   throws Exception {
-  	String filename = "//C:\\jairo\\projetos\\geotools-sample\\dados\\CCEAA10004.xml"; //"C:\\proj\\JTS\\KML\\usPop-STUS-p06.kml";
-  	KMLReader rdr = new KMLReader(filename);
+	URL filePath =  KMLReaderExample.class.getResource("/CCEAA10004.xml");
+  	KMLReader rdr = new KMLReader(filePath.getPath());
   	rdr.read();
   }
 
