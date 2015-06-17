@@ -2,17 +2,17 @@
 Automatically exported from code.google.com/p/easy-gpa
 
 # Easy-GPA-Android
-# CRUD API(Create, read, update and delete)
-# Google Persistence API
+## CRUD API(Create, read, update and delete)
+### Google Persistence API
 
 ![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)
 [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P95LLB4KYSQW2);
 
-*IRC* #easy-gpa<br> 
-*Group* http://groups.google.com/group/easy-gpa<br>
+**IRC** #easy-gpa<br> 
+**Group** http://groups.google.com/group/easy-gpa<br>
 <br>
-*Easy-gpa-android user guide* <br>
-*How to use? * <br>
+**Easy-gpa-android user guide** <br>
+## How to use?<br>
 First of all, <br>
 Create a new android project in eclipse and put on classpath the easy-gpa-android.jar <br>
 Set the easy-gpa-android.jar to work with sqlite database’s. <br>
@@ -25,7 +25,7 @@ After that, you have to annotate your class attributes’ getters and setters ac
 The first thing to consider is the primary key. <br>
 Make sure to annotate the table’s id with ```JAVA @GPAPrimaryKey(name="id_name", ignore=true)``` annotation. <br>
 The other regular fields must be annotated with ```JAVA @GPAField(name="field_name")``` annotation.<br>
-Example: The following example was made using this sqlite script: <br>
+**Example**: The following example was made using this sqlite script: <br>
 ```SQL
 CREATE TABLE [tb_usuario] (
   [id] integer primary key autoincrement NOT NULL, 
