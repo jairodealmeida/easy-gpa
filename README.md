@@ -5,11 +5,8 @@ Automatically exported from code.google.com/p/easy-gpa
 # CRUD API(Create, read, update and delete)
 # Google Persistence API
 
-
-
-[https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P95LLB4KYSQW2 https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif]
-
-
+![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)
+[PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P95LLB4KYSQW2);
 
 *IRC* #easy-gpa<br> 
 *Group* http://groups.google.com/group/easy-gpa<br>
