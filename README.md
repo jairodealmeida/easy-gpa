@@ -23,11 +23,11 @@ To set the database instance to your project using easy-gpa-android.<br>
 In easy-gpa-android.jar library has a class named Entity <br>
 which you can make your regular beans extends in order to use easy-gpa functionalities.<br>
 Create a regular class with a suggestive name representing a database table, <br>
-make it extends Entity class (from easy-gpa.jar) and annotate it with {{{@GPAEntity(name="table_name")}}} annonation. <br>
+make it extends Entity class (from easy-gpa.jar) and annotate it with ```JAVA @GPAEntity(name="table_name")``` annonation. <br>
 After that, you have to annotate your class attributes’ getters and setters according to your database table’s fields. <br>
 The first thing to consider is the primary key. <br>
-Make sure to annotate the table’s id with {{{@GPAPrimaryKey(name="id_name", ignore=true)}}} annotation. <br>
-The other regular fields must be annotated with {{{@GPAField(name="field_name")}}} annotation.<br>
+Make sure to annotate the table’s id with ```JAVA @GPAPrimaryKey(name="id_name", ignore=true)``` annotation. <br>
+The other regular fields must be annotated with ```JAVA @GPAField(name="field_name")``` annotation.<br>
 Example: The following example was made using this sqlite script: <br>
 ```SQL
 CREATE TABLE [tb_usuario] (
