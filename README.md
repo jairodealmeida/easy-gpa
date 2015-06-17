@@ -236,7 +236,8 @@ This is an easy, simple and elegant form to manipulate/transact statements. No m
 see to:
 [http://code.google.com/p/easy-gpa-spatial/]
 
-*Guide authors:* <br>
-*Jairo de Almeida Since: v2 - 02/08/2011 * <br>
-*Willian da Costa Chimura : v3 - 06/09/2011* <br>
-*Jairo de Almeida Since: v4 - 17/11/2011 * <br>
+##Guide authors: <br>
+**Jairo de Almeida Since: v2 - 02/08/2011** <br>
+**Willian da Costa Chimura : v3 - 06/09/2011** <br>
+**Jairo de Almeida Since: v4 - 17/11/2011** <br>
+**Jairo de Almeida Since: v5 - 17/06/2014** <br>
