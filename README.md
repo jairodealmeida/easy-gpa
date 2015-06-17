@@ -1,9 +1,9 @@
 # easy-gpa
 Automatically exported from code.google.com/p/easy-gpa
 
-=Easy-GPA-Android=
-=CRUD API(Create, read, update and delete)=
-=Google Persistence API=
+# Easy-GPA-Android
+# CRUD API(Create, read, update and delete)
+# Google Persistence API
 
 
 
@@ -29,18 +29,18 @@ The first thing to consider is the primary key. <br>
 Make sure to annotate the table’s id with {{{@GPAPrimaryKey(name="id_name", ignore=true)}}} annotation. <br>
 The other regular fields must be annotated with {{{@GPAField(name="field_name")}}} annotation.<br>
 Example: The following example was made using this sqlite script: <br>
-{{{
+```SQL
 CREATE TABLE [tb_usuario] (
   [id] integer primary key autoincrement NOT NULL, 
   [nome_completo] VARCHAR NOT NULL, 
   [nome_usuario] VARCHAR NOT NULL, 
   [senha] VARCHAR NOT NULL);
-}}}
+```
 After this, a class with the table characterizes was created, extending Entity class to use it’s methods.<br>
 The following example shows how the class Usuario (user) implements the easy-gpa-android functionalities.:<br>
 
-{{{
 
+```JAVA
 import br.com.slv.database.dao.entity.Entity;
 import br.com.slv.database.dao.entity.annotation.GPAEntity;
 import br.com.slv.database.dao.entity.annotation.GPAField;
@@ -114,9 +114,9 @@ public class Usuario extends Entity{
 	}
 }
 
-}}}
+```
 With this entity created, you can try this android test code 
-{{{
+```JAVA
 import java.util.List;
 import android.test.ActivityInstrumentationTestCase2;
 import br.com.jro.gpa.MainActivity;
@@ -231,7 +231,7 @@ ActivityInstrumentationTestCase2<MainActivity>{
 
 	}	
 }
-}}}
+```
 By doing these tests, you will be creating an Entity instance to transact information from/to the configured database, <br>
 using a regular DBMS operations (insert update and delete).<br>
 This is an easy, simple and elegant form to manipulate/transact statements. No more hard DAO implementations. <br>
