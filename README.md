@@ -5,7 +5,7 @@ Automatically exported from code.google.com/p/easy-gpa
 ## CRUD API(Create, read, update and delete)
 ### Google Persistence API
 
-![Donate](https://marypotter.org.nz/wp-content/uploads/2018/04/Donate-button-Dark-teal_large.png =250x)
+![Donate](https://marypotter.org.nz/wp-content/uploads/2018/04/Donate-button-Dark-teal_large.png =100x20)
 [Donate To CharityWate Now Help a good cause](https://my.charitywater.org/charisma_on_command/charisma-on-command-fundraiser);
 
 **IRC** #easy-gpa<br> 
