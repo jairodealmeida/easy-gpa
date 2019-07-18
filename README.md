@@ -8,6 +8,11 @@ Automatically exported from code.google.com/p/easy-gpa
 ![Donate](http://foodshift.net/wp-content/uploads/2017/11/Donation-Button.png)
 [Donate To CharityWate Now Help a good cause](https://my.charitywater.org/charisma_on_command/charisma-on-command-fundraiser);
 
+http://github.com - automatic!
+[GitHub](http://github.com)
+
+[![Donate Now to Good Cause](http://foodshift.net/wp-content/uploads/2017/11/Donation-Button.png)](https://my.charitywater.org/charisma_on_command/charisma-on-command-fundraiser)
+
 **IRC** #easy-gpa<br> 
 **Group** http://groups.google.com/group/easy-gpa<br>
 <br>
