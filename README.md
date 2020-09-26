@@ -241,6 +241,13 @@ By doing these tests, you will be creating an Entity instance to transact inform
 using a regular DBMS operations (insert update and delete).<br>
 This is an easy, simple and elegant form to manipulate/transact statements. No more hard DAO implementations. <br>
 
+##Youtube channel
+<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLLAE7O8grxj-V3W1D284SG1WNc99fgxH2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+
+
 see to:
 [http://code.google.com/p/easy-gpa-spatial/]
 
