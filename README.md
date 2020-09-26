@@ -241,18 +241,18 @@ By doing these tests, you will be creating an Entity instance to transact inform
 using a regular DBMS operations (insert update and delete).<br>
 This is an easy, simple and elegant form to manipulate/transact statements. No more hard DAO implementations. <br>
 
-##Youtube Code History
+## Youtube Code History
 
 [![History of coding of EASY-GPA API - Credits the Gource AROUND incredible functionality, thanks](https://img.youtube.com/vi/_lfHKMuI1JI/0.jpg)](https://www.youtube.com/watch?v=_lfHKMuI1JI)
 
-##Youtube Playlist
+## Youtube Playlist
 [https://www.youtube.com/playlist?list=PLLAE7O8grxj-V3W1D284SG1WNc99fgxH2]
 
 
 see to:
 [http://code.google.com/p/easy-gpa-spatial/]
 
-##Guide authors: <br>
+## Guide authors: <br>
 **Jairo de Almeida Since: v2 - 02/08/2011** <br>
 **Willian da Costa Chimura : v3 - 06/09/2011** <br>
 **Jairo de Almeida Since: v4 - 17/11/2011** <br>
