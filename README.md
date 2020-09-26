@@ -243,7 +243,7 @@ This is an easy, simple and elegant form to manipulate/transact statements. No m
 
 ##Youtube channel
 <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLLAE7O8grxj-V3W1D284SG1WNc99fgxH2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+[![History of coding of EASY-GPA API - ORM Component Credits the Gource AROUND incredible functionality, thanks](https://img.youtube.com/vi/_lfHKMuI1JI&list=PLLAE7O8grxj-V3W1D284SG1WNc99fgxH2/0.jpg)](https://www.youtube.com/watch?v=_lfHKMuI1JI&list=PLLAE7O8grxj-V3W1D284SG1WNc99fgxH2)
 
 
 
