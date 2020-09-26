@@ -249,7 +249,7 @@ This is an easy, simple and elegant form to manipulate/transact statements. No m
 [https://www.youtube.com/playlist?list=PLLAE7O8grxj-V3W1D284SG1WNc99fgxH2]
 
 
-see to:
+## Old Versions, see to:
 [http://code.google.com/p/easy-gpa-spatial/]
 
 ## Guide authors: <br>
